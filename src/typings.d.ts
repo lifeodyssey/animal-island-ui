@@ -1,10 +1,4 @@
-// CSS Modules 类型声明
-declare module '*.module.less' {
-    const classes: { readonly [key: string]: string };
-    export default classes;
-}
-
-declare module '*.less' {
+declare module '*.css' {
     const content: string;
     export default content;
 }

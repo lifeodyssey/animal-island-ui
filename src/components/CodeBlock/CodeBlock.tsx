@@ -1,4 +1,5 @@
 import React from 'react';
+import { cn } from '../../utils/cn';
 
 const COLORS = {
     comment: '#6b5e50',
@@ -12,21 +13,6 @@ const COLORS = {
     operator: '#d4b896',
     number: '#a8d4a0',
     default: '#e8d5bc',
-};
-
-const codeBlockStyle: React.CSSProperties = {
-    padding: '20px 24px',
-    background: '#2b2118',
-    border: '1px solid #3d3028',
-    borderRadius: 20,
-    fontSize: 14,
-    lineHeight: 1.7,
-    fontFamily: "'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace",
-    fontWeight: 600,
-    color: '#e8d5bc',
-    whiteSpace: 'pre' as const,
-    overflow: 'auto' as const,
-    tabSize: 4,
 };
 
 const highlightJSX = (code: string): React.ReactNode[] => {
@@ -86,14 +72,21 @@ const highlightJSX = (code: string): React.ReactNode[] => {
     return result;
 };
 
-export interface CodeBlockProps {
+export interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {
     code: string;
-    style?: React.CSSProperties;
-    className?: string;
 }
 
-export const CodeBlock: React.FC<CodeBlockProps> = ({ code, style, className }) => (
-    <pre style={{ ...codeBlockStyle, ...style }} className={className}>
-        {highlightJSX(code)}
-    </pre>
+export const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
+    ({ code, style, className, ...rest }, ref) => (
+        <pre
+            ref={ref}
+            style={style}
+            className={cn('animal-code-block', className)}
+            {...rest}
+        >
+            {highlightJSX(code)}
+        </pre>
+    )
 );
+
+CodeBlock.displayName = 'CodeBlock';

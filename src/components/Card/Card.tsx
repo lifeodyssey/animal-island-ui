@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './card.module.less';
+import { cn } from '../../utils/cn';
 
 export type CardType = 'default' | 'title' | 'dashed';
 
@@ -27,33 +27,56 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     children?: React.ReactNode;
 }
 
-export const Card: React.FC<CardProps> = ({
-    type = 'default',
-    color = 'default',
-    children,
-    className,
-    style,
-    ...rest
-}) => {
-    const cls = [
-        styles.card,
-        type === 'title' && styles['card-title'],
-        type === 'dashed' && styles['card-dashed'],
-        color !== 'default' && styles[`card-${color}`],
-        className,
-    ]
-        .filter(Boolean)
-        .join(' ');
-
-    return (
-        <div
-            className={cls}
-            style={style}
-            {...rest}
-        >
-            {children}
-        </div>
-    );
+const cardTypeClassNames: Record<CardType, string | false> = {
+    default: false,
+    title: 'animal-card-title',
+    dashed: 'animal-card-dashed',
 };
+
+const cardColorClassNames: Record<CardColor, string | false> = {
+    default: false,
+    'app-pink': 'animal-card-app-pink',
+    purple: 'animal-card-purple',
+    'app-blue': 'animal-card-app-blue',
+    'app-yellow': 'animal-card-app-yellow',
+    'app-orange': 'animal-card-app-orange',
+    'app-teal': 'animal-card-app-teal',
+    'app-green': 'animal-card-app-green',
+    'app-red': 'animal-card-app-red',
+    'lime-green': 'animal-card-lime-green',
+    'yellow-green': 'animal-card-yellow-green',
+    brown: 'animal-card-brown',
+    'warm-peach-pink': 'animal-card-warm-peach-pink',
+};
+
+export const Card = React.forwardRef<HTMLDivElement, CardProps>(
+    (
+        {
+            type = 'default',
+            color = 'default',
+            children,
+            className,
+            style,
+            ...rest
+        },
+        ref
+    ) => {
+        return (
+            <div
+                ref={ref}
+                className={cn(
+                    'animal-card',
+                    cardTypeClassNames[type],
+                    cardColorClassNames[color],
+                    className
+                )}
+                style={style}
+                {...rest}
+            >
+                {children}
+            </div>
+        );
+    }
+);
 
 Card.displayName = 'Card';

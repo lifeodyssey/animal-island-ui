@@ -79,13 +79,13 @@ const renderTruncated = (
  * - 按字符逐个显示，保留原 children 的元素结构、换行和样式
  * - 不引入任何外层包裹元素，对布局 / 字号 / 颜色 / 字体均零影响
  */
-export const Typewriter: React.FC<TypewriterProps> = ({
+export function Typewriter({
     children,
     speed = 90,
     trigger,
     autoPlay = true,
     onDone,
-}) => {
+}: TypewriterProps) {
     const total = useMemo(() => countText(children), [children]);
     const [count, setCount] = useState(autoPlay ? 0 : total);
     const timerRef = useRef<number | null>(null);
@@ -119,6 +119,6 @@ export const Typewriter: React.FC<TypewriterProps> = ({
 
     const state: RenderState = { remaining: count, stopped: false };
     return <>{renderTruncated(children, state)}</>;
-};
+}
 
 Typewriter.displayName = 'Typewriter';

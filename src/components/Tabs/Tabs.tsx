@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import styles from './tabs.module.less';
+import React, { useEffect, useState } from 'react';
+import * as RadixTabs from '@radix-ui/react-tabs';
+import { cn } from '../../utils/cn';
 import leafIcon from '../../assets/img/icons/icon-leaf.png';
 
 export interface TabItem {
@@ -8,71 +9,109 @@ export interface TabItem {
     children: React.ReactNode;
 }
 
-export interface TabsProps {
+export interface TabsProps
+    extends Omit<
+        React.ComponentPropsWithoutRef<typeof RadixTabs.Root>,
+        'value' | 'defaultValue' | 'onValueChange' | 'onChange'
+    > {
     items: TabItem[];
     defaultActiveKey?: string;
     activeKey?: string;
     onChange?: (key: string) => void;
-    className?: string;
-    style?: React.CSSProperties;
     leafAnimation?: boolean;
     shadow?: boolean;
 }
 
-export const Tabs: React.FC<TabsProps> = ({
-    items,
-    defaultActiveKey,
-    activeKey,
-    onChange,
-    className,
-    style,
-    leafAnimation = true,
-    shadow = true,
-}) => {
-    const [internalActiveKey, setInternalActiveKey] = useState(
-        defaultActiveKey || items[0]?.key
-    );
+export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
+    (
+        {
+            items,
+            defaultActiveKey,
+            activeKey,
+            onChange,
+            className,
+            style,
+            leafAnimation = true,
+            shadow = true,
+            ...rest
+        },
+        ref
+    ) => {
+        const fallbackActiveKey = defaultActiveKey ?? items[0]?.key;
+        const isControlled = activeKey !== undefined;
+        const [uncontrolledActiveKey, setUncontrolledActiveKey] = useState(fallbackActiveKey);
+        const currentActiveKey = isControlled ? activeKey : uncontrolledActiveKey;
 
-    const currentActiveKey = activeKey !== undefined ? activeKey : internalActiveKey;
+        useEffect(() => {
+            if (isControlled) return;
+            if (currentActiveKey === undefined) {
+                setUncontrolledActiveKey(defaultActiveKey ?? items[0]?.key);
+                return;
+            }
+            if (items.some((item) => item.key === currentActiveKey)) return;
+            setUncontrolledActiveKey(defaultActiveKey ?? items[0]?.key);
+        }, [currentActiveKey, defaultActiveKey, isControlled, items]);
 
-    const handleTabClick = (key: string) => {
-        if (activeKey === undefined) {
-            setInternalActiveKey(key);
-        }
-        onChange?.(key);
-    };
+        const handleValueChange = (key: string) => {
+            if (!isControlled) {
+                setUncontrolledActiveKey(key);
+            }
+            onChange?.(key);
+        };
 
-    const activeItem = items.find((item) => item.key === currentActiveKey);
-
-    const cls = [styles.tabs, className].filter(Boolean).join(' ');
-
-    return (
-        <div className={cls} style={style}>
-            <div className={styles.tabList}>
-                {items.map((item) => {
-                    const isActive = item.key === currentActiveKey;
-                    return (
-                        <button
-                            key={item.key}
-                            className={`${styles.tabItem} ${isActive ? styles.active : ''} ${isActive && shadow ? styles['active-shadow'] : ''}`}
-                            onClick={() => handleTabClick(item.key)}
-                        >
-                            <span className={styles.tabIcon}>
-                                {isActive ? '●' : '○'}
-                            </span>
-                            <span className={styles.tabLabel}>{item.label}</span>
-                            {isActive && <img src={leafIcon} alt="" className={`${styles.tabLeaf} ${leafAnimation ? '' : styles.tabLeafStatic}`} />}
-                        </button>
-                    );
-                })}
-            </div>
-            <div className={styles.tabContent}>
-                <div className={styles.tabContentInner}>
-                    {activeItem?.children}
-                </div>
-            </div>
-        </div>
-    );
-};
+        return (
+            <RadixTabs.Root
+                ref={ref}
+                className={cn('animal-tabs', className)}
+                style={style}
+                value={currentActiveKey ?? ''}
+                onValueChange={handleValueChange}
+                {...rest}
+            >
+                <RadixTabs.List className="animal-tabs-list">
+                    {items.map((item) => {
+                        const isActive = item.key === currentActiveKey;
+                        return (
+                            <RadixTabs.Trigger
+                                key={item.key}
+                                value={item.key}
+                                className={cn(
+                                    'animal-tab-trigger',
+                                    isActive && shadow && 'animal-tab-shadow'
+                                )}
+                            >
+                                <span className="animal-tab-icon">
+                                    {isActive ? '●' : '○'}
+                                </span>
+                                <span className="animal-tab-label">{item.label}</span>
+                                {isActive && (
+                                    <img
+                                        src={leafIcon}
+                                        alt=""
+                                        className={cn(
+                                            'animal-tab-leaf',
+                                            !leafAnimation && 'animal-tab-leaf-static'
+                                        )}
+                                    />
+                                )}
+                            </RadixTabs.Trigger>
+                        );
+                    })}
+                </RadixTabs.List>
+                {items.map((item) => (
+                    <RadixTabs.Content
+                        key={item.key}
+                        value={item.key}
+                        className="animal-tab-content"
+                    >
+                        <div className="animal-tab-content-inner">
+                            {item.children}
+                        </div>
+                    </RadixTabs.Content>
+                ))}
+            </RadixTabs.Root>
+        );
+    }
+);
 
 Tabs.displayName = 'Tabs';

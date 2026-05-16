@@ -1,9 +1,23 @@
 import React from 'react';
-import styles from './button.module.less';
+import { cn } from '../../utils/cn';
 
 export type ButtonType = 'primary' | 'default' | 'dashed' | 'text' | 'link';
 export type ButtonSize = 'small' | 'middle' | 'large';
 export type ButtonHTMLType = 'submit' | 'reset' | 'button';
+
+const buttonTypeClassName: Record<ButtonType, string> = {
+    primary: 'animal-btn-primary',
+    default: 'animal-btn-default',
+    dashed: 'animal-btn-dashed',
+    text: 'animal-btn-text',
+    link: 'animal-btn-link',
+};
+
+const buttonSizeClassName: Record<ButtonSize, string> = {
+    small: 'animal-btn-small',
+    middle: 'animal-btn-middle',
+    large: 'animal-btn-large',
+};
 
 export interface ButtonProps extends Omit<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -30,46 +44,64 @@ export interface ButtonProps extends Omit<
     children?: React.ReactNode;
 }
 
-export const Button: React.FC<ButtonProps> = ({
-    type = 'default',
-    size = 'middle',
-    danger = false,
-    ghost = false,
-    block = false,
-    loading = false,
-    disabled = false,
-    icon,
-    htmlType = 'button',
-    children,
-    className,
-    ...rest
-}) => {
-    const classNames = [
-        styles.btn,
-        styles[`btn-${type}`],
-        styles[`btn-${size}`],
-        danger && styles['btn-danger'],
-        ghost && styles['btn-ghost'],
-        block && styles['btn-block'],
-        loading && styles['btn-loading'],
-        className,
-    ]
-        .filter(Boolean)
-        .join(' ');
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+    (
+        {
+            type = 'default',
+            size = 'middle',
+            danger = false,
+            ghost = false,
+            block = false,
+            loading = false,
+            disabled = false,
+            icon,
+            htmlType = 'button',
+            children,
+            className,
+            onClick,
+            'aria-busy': ariaBusy,
+            'aria-disabled': ariaDisabled,
+            ...rest
+        },
+        ref
+    ) => {
+        const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+            if (loading) {
+                event.preventDefault();
+                event.stopPropagation();
+                return;
+            }
 
-    return (
-        <button
-            type={htmlType}
-            className={classNames}
-            disabled={disabled}
-            {...rest}
-        >
-            {icon && !loading && (
-                <span className={styles['btn-icon']}>{icon}</span>
-            )}
-            {children && <span>{children}</span>}
-        </button>
-    );
-};
+            onClick?.(event);
+        };
+
+        return (
+            <button
+                {...rest}
+                ref={ref}
+                type={htmlType}
+                className={cn(
+                    'animal-btn',
+                    buttonTypeClassName[type],
+                    buttonSizeClassName[size],
+                    danger && 'animal-btn-danger',
+                    ghost && 'animal-btn-ghost',
+                    block && 'animal-btn-block',
+                    loading && 'animal-btn-loading',
+                    className
+                )}
+                disabled={disabled}
+                aria-busy={loading ? true : ariaBusy}
+                aria-disabled={loading ? true : ariaDisabled}
+                onClick={handleClick}
+            >
+                {icon && !loading && (
+                    <span className="animal-btn-icon">{icon}</span>
+                )}
+                {children && <span>{children}</span>}
+            </button>
+        );
+    }
+);
 
 Button.displayName = 'Button';

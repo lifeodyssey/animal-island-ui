@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import styles from './Loading.module.less';
+import { cn } from '../../utils/cn';
 import gsapScript from './island/gsap.min.js?raw';
 import motionPathPlugin from './island/MotionPathPlugin.min.js?raw';
 import animationScript from './island/script.js?raw';
@@ -79,7 +79,7 @@ const SVG_CONTENT = `<svg viewBox="0 0 446 540" xmlns="http://www.w3.org/2000/sv
     </g>
 </g></svg>`;
 
-export const Loading: React.FC<LoadingProps> = ({ className, style, active = true }) => {
+export function Loading({ className, style, active = true }: LoadingProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const preContainerRef = useRef<HTMLDivElement>(null);
 
@@ -115,12 +115,12 @@ export const Loading: React.FC<LoadingProps> = ({ className, style, active = tru
         const duration = Math.max(0.1, finalR / 1500);
 
         if (active) {
-            container.classList.remove(styles.closing);
+            container.classList.remove('animal-loading-closing');
             container.style.transition = '';
             container.style.setProperty('--mask-r', '0px');
             container.style.display = 'flex';
         } else {
-            container.classList.add(styles.closing);
+            container.classList.add('animal-loading-closing');
             container.style.transition = '';
             container.style.setProperty('--mask-r', '0px');
             // 强制 reflow 让初始值生效
@@ -136,12 +136,12 @@ export const Loading: React.FC<LoadingProps> = ({ className, style, active = tru
     }, [active]);
 
     return (
-        <div ref={preContainerRef} className={styles.wrapper}>
-            <div ref={containerRef} className={`${styles.container} ${className || ''}`} style={style}>
+        <div ref={preContainerRef} className="animal-loading-wrapper">
+            <div ref={containerRef} className={cn('animal-loading-container', className)} style={style}>
                 <div dangerouslySetInnerHTML={{ __html: SVG_CONTENT }} />
             </div>
         </div>
     );
-};
+}
 
 Loading.displayName = 'Loading';

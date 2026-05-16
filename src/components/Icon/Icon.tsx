@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './icon.module.less';
+import { cn } from '../../utils/cn';
 
 export type IconName =
     | 'icon-miles'
@@ -13,34 +13,47 @@ export type IconName =
     | 'icon-shopping'
     | 'icon-variant';
 
-export interface IconProps {
+export interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
     name: IconName;
     size?: number | string;
-    className?: string;
-    style?: React.CSSProperties;
     bounce?: boolean;
 }
 
-export const Icon: React.FC<IconProps> = ({
-    name,
-    size = 24,
-    className,
-    style,
-    bounce = false,
-    ...rest
-}) => {
-    return (
-        <span
-            className={`${styles.icon} ${styles[name]} ${bounce ? styles['icon-bounce'] : ''} ${className || ''}`}
-            style={{
-                width: size,
-                height: size,
-                ...style,
-            }}
-            {...rest}
-        />
-    );
-};
+export const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
+    (
+        {
+            name,
+            size = 24,
+            className,
+            style,
+            bounce = false,
+            'aria-label': ariaLabel,
+            'aria-labelledby': ariaLabelledBy,
+            'aria-hidden': ariaHiddenProp,
+            ...rest
+        },
+        ref
+    ) => {
+        // Icons are decorative by default; allow consumers to opt-in to an accessible name.
+        const ariaHidden = ariaHiddenProp ?? (ariaLabel || ariaLabelledBy ? undefined : true);
+
+        return (
+            <span
+                ref={ref}
+                className={cn('animal-icon', `animal-${name}`, bounce && 'animal-icon-bounce', className)}
+                aria-hidden={ariaHidden}
+                style={{
+                    width: size,
+                    height: size,
+                    ...style,
+                }}
+                {...rest}
+            />
+        );
+    }
+);
+
+Icon.displayName = 'Icon';
 
 export const ICON_LIST: { name: IconName; label: string }[] = [
     { name: 'icon-miles', label: 'NookMiles' },

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import styles from './phone.module.less';
+import { cn } from '../../utils/cn';
 
-export interface PhoneProps {
-    className?: string;
-}
+export interface PhoneProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 interface App {
     id: string;
@@ -11,21 +9,22 @@ interface App {
     color: string;
     offset?: boolean;
     hasNewMessage?: boolean;
+    iconWidth?: number;
 }
 
 const apps: App[] = [
-    { id: 'camera', iconClass: 'iconCamera', color: '#B77DEE', hasNewMessage: true },
-    { id: 'app', iconClass: 'iconMiles', color: '#889DF0', offset: true },
-    { id: 'critterpedia', iconClass: 'iconCritterpedia', color: '#F7CD67' },
-    { id: 'diy', iconClass: 'iconDiy', color: '#E59266' },
-    { id: 'shopping', iconClass: 'iconDesign', color: '#F8A6B2' },
-    { id: 'variant', iconClass: 'iconMap', color: '#82D5BB', hasNewMessage: true },
-    { id: 'design', iconClass: 'iconVariant', color: '#8AC68A' },
-    { id: 'map', iconClass: 'iconHelicopter', color: '#FC736D' },
-    { id: 'chat', iconClass: 'iconChat', color: '#D1DA49' },
+    { id: 'camera', iconClass: 'animal-icon-camera', color: '#B77DEE', hasNewMessage: true },
+    { id: 'app', iconClass: 'animal-icon-miles', color: '#889DF0', offset: true },
+    { id: 'critterpedia', iconClass: 'animal-icon-critterpedia', color: '#F7CD67', iconWidth: 105 },
+    { id: 'diy', iconClass: 'animal-icon-diy', color: '#E59266' },
+    { id: 'shopping', iconClass: 'animal-icon-design', color: '#F8A6B2' },
+    { id: 'variant', iconClass: 'animal-icon-map', color: '#82D5BB', hasNewMessage: true, iconWidth: 90 },
+    { id: 'design', iconClass: 'animal-icon-variant', color: '#8AC68A', iconWidth: 80 },
+    { id: 'map', iconClass: 'animal-icon-helicopter', color: '#FC736D' },
+    { id: 'chat', iconClass: 'animal-icon-chat', color: '#D1DA49' },
 ];
 
-export const Phone: React.FC<PhoneProps> = ({ className }) => {
+export const Phone = React.forwardRef<HTMLDivElement, PhoneProps>(({ className, ...rest }, ref) => {
     const [time, setTime] = useState(new Date());
 
     useEffect(() => {
@@ -42,38 +41,47 @@ export const Phone: React.FC<PhoneProps> = ({ className }) => {
     const displayMinutes = minutes.toString().padStart(2, '0');
 
     return (
-        <div className={`${styles.phoneContainer} ${className || ''}`}>
-            <div className={styles.phone}>
-                <div className={styles.screenContent}>
-                    <div className={styles.homeScreen}>
-                        <div className={styles.dateDisplay}>
-                            <div className={styles.dateDisplayHeader}>
-                                <span className={styles.iconWifi} />
-                                <div>{displayHours}<span className={styles.blink}>:</span>{displayMinutes}{ampm}</div>
-                                <span className={styles.iconLocation} />
+        <div
+            ref={ref}
+            className={cn('animal-phone-container', className)}
+            {...rest}
+        >
+            <div className="animal-phone">
+                <div className="animal-phone-screen">
+                    <div className="animal-phone-date">
+                        <div className="animal-phone-status">
+                            <span className="animal-icon animal-phone-wifi" />
+                            <div>{displayHours}<span className="animal-time-colon">:</span>{displayMinutes}{ampm}</div>
+                            <span className="animal-icon animal-phone-location" />
+                        </div>
+                        <div className="animal-phone-welcome">Welcome!</div>
+                    </div>
+                    <div className="animal-phone-apps">
+                        {apps.map((app) => (
+                            <div
+                                key={app.id}
+                                className={cn('animal-phone-app', app.offset && 'animal-phone-app-offset')}
+                                style={{ backgroundColor: app.color }}
+                            >
+                                {app.hasNewMessage && <span className="animal-phone-badge" />}
+                                <span
+                                    className={cn(
+                                        'animal-phone-app-icon',
+                                        app.iconClass,
+                                        app.offset && 'animal-phone-app-icon-offset',
+                                    )}
+                                    style={app.iconWidth ? { width: app.iconWidth } : undefined}
+                                />
                             </div>
-                            <div className={styles.dayText}>Welcome!</div>
-                        </div>
-                        <div className={styles.appsGrid}>
-                            {apps.map((app) => (
-                                <div
-                                    key={app.id}
-                                    className={`${styles.appItem} ${app.offset ? styles.appItemOffset : ''}`}
-                                    style={{ backgroundColor: app.color }}
-                                >
-                                    {app.hasNewMessage && <span className={styles.badge} />}
-                                    <span
-                                        className={`${styles.appIcon} ${styles[app.iconClass]} ${app.offset ? styles.appIconOffset : ''}`}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                        <div className={styles.pageIndicator}>
-                            <span className={styles.iconPage} />
-                        </div>
+                        ))}
+                    </div>
+                    <div className="animal-phone-page">
+                        <span className="animal-icon animal-phone-page-icon" />
                     </div>
                 </div>
             </div>
         </div>
     );
-};
+});
+
+Phone.displayName = 'Phone';

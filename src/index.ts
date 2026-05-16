@@ -1,5 +1,5 @@
-// 全局样式
-import './styles/index.less';
+// Global Tailwind v4 token/style entry
+import './styles/tokens.css';
 
 
 // Nunito（latin subset only）

@@ -1,24 +1,24 @@
 import React from 'react';
-import styles from './footer.module.less';
+import { cn } from '../../utils/cn';
 
 export type FooterType = 'sea' | 'tree';
 
-export interface FooterProps {
+export interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
     /** Footer 类型 */
     type?: FooterType;
-    /** 自定义类名 */
-    className?: string;
-    /** 自定义样式 */
-    style?: React.CSSProperties;
 }
 
-export const Footer: React.FC<FooterProps> = ({
-    type = 'tree',
-    className,
-    style,
-}) => {
-    const cls = [styles.footer, styles[type], className].filter(Boolean).join(' ');
-    return <div className={cls} style={style} />;
-};
+export const Footer = React.forwardRef<HTMLDivElement, FooterProps>(
+    ({ type = 'tree', className, style, ...rest }, ref) => {
+        return (
+            <div
+                ref={ref}
+                className={cn('animal-footer', type === 'tree' && 'animal-footer-tree', className)}
+                style={style}
+                {...rest}
+            />
+        );
+    }
+);
 
 Footer.displayName = 'Footer';

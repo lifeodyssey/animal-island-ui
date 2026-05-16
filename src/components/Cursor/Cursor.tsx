@@ -1,24 +1,22 @@
 import React from 'react';
-import './cursor.css';
+import { cn } from '../../utils/cn';
 
-export interface CursorProps {
+export interface CursorProps extends React.HTMLAttributes<HTMLDivElement> {
     /** 子元素 */
     children?: React.ReactNode;
-    /** 自定义类名 */
-    className?: string;
-    /** 自定义样式 */
-    style?: React.CSSProperties;
 }
 
-export const Cursor: React.FC<CursorProps> = ({ children, className, style }) => {
-    return (
+export const Cursor = React.forwardRef<HTMLDivElement, CursorProps>(
+    ({ children, className, style, ...rest }, ref) => (
         <div
-            className={`animal-cursor${className ? ` ${className}` : ''}`}
+            ref={ref}
+            className={cn('animal-cursor', className)}
             style={style}
+            {...rest}
         >
             {children}
         </div>
-    );
-};
+    )
+);
 
 Cursor.displayName = 'Cursor';

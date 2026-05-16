@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -7,22 +8,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
     base: '/animal-island-ui/',
-    plugins: [react()],
+    plugins: [react(), tailwindcss()],
     resolve: {
         alias: {
             '@': resolve(__dirname, 'src'),
-        },
-    },
-    css: {
-        modules: {
-            generateScopedName: 'animal-[local]-[hash:base64:5]',
-            localsConvention: 'camelCase',
-        },
-        preprocessorOptions: {
-            less: {
-                javascriptEnabled: true,
-                additionalData: `@import "${resolve(__dirname, 'src/styles/variables.less')}";`,
-            },
         },
     },
     build: {
@@ -37,4 +26,3 @@ export default defineConfig({
        assetsInlineLimit: 4096,
     },
 });
-

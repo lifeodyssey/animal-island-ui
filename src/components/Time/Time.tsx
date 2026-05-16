@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Cursor } from '../Cursor';
-import styles from './time.module.less';
+import { cn } from '../../utils/cn';
 
-export interface TimeProps {
-    className?: string;
-}
+export interface TimeProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-export const Time: React.FC<TimeProps> = ({ className }) => {
+export const Time = React.forwardRef<HTMLDivElement, TimeProps>(({ className, ...rest }, ref) => {
     const [currentTime, setCurrentTime] = useState(new Date());
 
     useEffect(() => {
@@ -19,23 +17,27 @@ export const Time: React.FC<TimeProps> = ({ className }) => {
 
     return (
         <Cursor>
-            <div className={`${styles.acDatetime} ${className || ''}`}>
-                <div className={styles.acDate}>
-                    <span className={styles.acWeekday}>
+            <div
+                ref={ref}
+                className={cn('animal-time', className)}
+                {...rest}
+            >
+                <div className="animal-time-date">
+                    <span className="animal-time-weekday">
                         {weekdays[currentTime.getDay()]}
                     </span>
-                    <span className={styles.acMonthday}>
+                    <span className="animal-time-monthday">
                         {months[currentTime.getMonth()]} {currentTime.getDate()}
                     </span>
                 </div>
-                <div className={styles.acTime}>
+                <div className="animal-time-clock">
                     {currentTime.getHours().toString().padStart(2, '0')}
-                    <span className={styles.acColon}>:</span>
+                    <span className="animal-time-colon">:</span>
                     {currentTime.getMinutes().toString().padStart(2, '0')}
                 </div>
             </div>
         </Cursor>
     );
-};
+});
 
 Time.displayName = 'Time';

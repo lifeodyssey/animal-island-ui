@@ -1,9 +1,13 @@
-import React, { useState, useCallback } from 'react';
-import styles from './switch.module.less';
+import React, { useCallback, useState } from 'react';
+import * as RadixSwitch from '@radix-ui/react-switch';
+import { cn } from '../../utils/cn';
 
 export type SwitchSize = 'small' | 'default';
 
-export interface SwitchProps {
+export interface SwitchProps extends Omit<
+    React.ComponentPropsWithoutRef<typeof RadixSwitch.Root>,
+    'checked' | 'defaultChecked' | 'disabled' | 'onChange' | 'onCheckedChange' | 'children'
+> {
     /** 是否选中（受控） */
     checked?: boolean;
     /** 默认是否选中 */
@@ -20,59 +24,63 @@ export interface SwitchProps {
     unCheckedChildren?: React.ReactNode;
     /** 变化回调 */
     onChange?: (checked: boolean) => void;
-    className?: string;
 }
 
-export const Switch: React.FC<SwitchProps> = ({
-    checked,
-    defaultChecked = false,
-    size = 'default',
-    disabled = false,
-    loading = false,
-    checkedChildren,
-    unCheckedChildren,
-    onChange,
-    className,
-}) => {
-    const [innerChecked, setInnerChecked] = useState(defaultChecked);
-    const isControlled = checked !== undefined;
-    const isChecked = isControlled ? checked : innerChecked;
+export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
+    (
+        {
+            checked,
+            defaultChecked = false,
+            size = 'default',
+            disabled = false,
+            loading = false,
+            checkedChildren,
+            unCheckedChildren,
+            onChange,
+            className,
+            ...rest
+        },
+        ref,
+    ) => {
+        const [innerChecked, setInnerChecked] = useState(defaultChecked);
+        const isControlled = checked !== undefined;
+        const isChecked = isControlled ? checked : innerChecked;
+        const isDisabled = disabled || loading;
 
-    const handleClick = useCallback(() => {
-        if (disabled || loading) return;
-        const next = !isChecked;
-        if (!isControlled) setInnerChecked(next);
-        onChange?.(next);
-    }, [disabled, loading, isChecked, isControlled, onChange]);
+        // Radix passes the next checked state. Use it directly to avoid "toggle based on stale state" bugs.
+        const handleCheckedChange = useCallback(
+            (nextChecked: boolean) => {
+                if (isDisabled) return;
+                if (!isControlled) setInnerChecked(nextChecked);
+                onChange?.(nextChecked);
+            },
+            [isDisabled, isControlled, onChange],
+        );
 
-    const cls = [
-        styles.switch,
-        styles[`switch-${size}`],
-        isChecked && styles['switch-checked'],
-        disabled && styles['switch-disabled'],
-        loading && styles['switch-loading'],
-        className,
-    ]
-        .filter(Boolean)
-        .join(' ');
-
-    return (
-        <button
-            type="button"
-            role="switch"
-            aria-checked={isChecked}
-            className={cls}
-            onClick={handleClick}
-            disabled={disabled}
-        >
-            <span className={styles.handle}>
-                {loading && <span className={styles.spinner} />}
-            </span>
-            <span className={styles.inner}>
-                {isChecked ? checkedChildren : unCheckedChildren}
-            </span>
-        </button>
-    );
-};
+        return (
+            <RadixSwitch.Root
+                ref={ref}
+                className={cn(
+                    'animal-switch',
+                    size === 'small' && 'animal-switch-small',
+                    disabled && 'animal-switch-disabled',
+                    loading && 'animal-switch-loading',
+                    className,
+                )}
+                checked={isChecked}
+                onCheckedChange={handleCheckedChange}
+                disabled={isDisabled}
+                {...rest}
+            >
+                <span className="animal-switch-inner">
+                    {isChecked ? checkedChildren : unCheckedChildren}
+                </span>
+                <RadixSwitch.Thumb className="animal-switch-thumb">
+                    {loading && <span className="animal-spinner" />}
+                </RadixSwitch.Thumb>
+            </RadixSwitch.Root>
+        );
+    },
+);
 
 Switch.displayName = 'Switch';

@@ -1,12 +1,16 @@
-import React, { useState, useRef, useEffect } from 'react';
-import styles from './select.module.less';
+import React from 'react';
+import * as RadixSelect from '@radix-ui/react-select';
+import { cn } from '../../utils/cn';
 
 export type SelectOption = {
     key: string;
     label: string;
 };
 
-export interface SelectProps {
+export interface SelectProps extends Omit<
+    React.ComponentPropsWithoutRef<typeof RadixSelect.Trigger>,
+    'children' | 'defaultValue' | 'disabled' | 'onChange' | 'value'
+> {
     options: SelectOption[];
     value: string;
     onChange: (key: string) => void;
@@ -14,130 +18,95 @@ export interface SelectProps {
     disabled?: boolean;
 }
 
-export const Select: React.FC<SelectProps> = ({
-    options,
-    value,
-    onChange,
-    placeholder = '请选择',
-    disabled = false,
-}) => {
-    const [open, setOpen] = useState(false);
-    const [hoveredKey, setHoveredKey] = useState<string | null>(null);
-    const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({});
-    const [mounted, setMounted] = useState(false);
-    const wrapperRef = useRef<HTMLDivElement>(null);
-    const currentLabel = options.find((o) => o.key === value)?.label || placeholder;
+const RADIX_VALUE_PREFIX = 'animal-option-';
 
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
-                setOpen(false);
-                setMounted(false);
-            }
-        };
-        if (open) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [open]);
+const toRadixValue = (index: number) => `${RADIX_VALUE_PREFIX}${index}`;
 
-    useEffect(() => {
-        if (open && wrapperRef.current) {
-            const rect = wrapperRef.current.getBoundingClientRect();
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-            const dropdownHeight = options.length * 44 + 24;
-
-            const newStyle: React.CSSProperties = {
-                position: 'absolute',
-            };
-
-            if (rect.right + 200 > viewportWidth) {
-                newStyle.right = '100%';
-                newStyle.marginRight = '6px';
-                newStyle.left = 'auto';
-            } else {
-                newStyle.left = '100%';
-                newStyle.marginLeft = '6px';
-                newStyle.right = 'auto';
-            }
-
-            const spaceBelow = viewportHeight - rect.bottom;
-            const spaceAbove = rect.top;
-
-            if (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
-                newStyle.top = 'auto';
-                newStyle.bottom = '100%';
-                newStyle.marginBottom = '6px';
-                delete newStyle.transform;
-            } else if (spaceBelow < dropdownHeight) {
-                newStyle.top = '100%';
-                newStyle.marginTop = '6px';
-                newStyle.bottom = 'auto';
-                delete newStyle.transform;
-            } else if (rect.top < dropdownHeight) {
-                newStyle.top = '100%';
-                newStyle.marginTop = '6px';
-                newStyle.bottom = 'auto';
-                delete newStyle.transform;
-            } else {
-                newStyle.top = '50%';
-                newStyle.transform = 'translateY(-50%)';
-                newStyle.bottom = 'auto';
-            }
-
-            setDropdownStyle(newStyle);
-            requestAnimationFrame(() => {
-                setMounted(true);
-            });
-        } else if (!open) {
-            setMounted(false);
-        }
-    }, [open, options.length]);
-
-    const handleSelect = (key: string) => {
-        onChange(key);
-        setOpen(false);
-        setMounted(false);
-    };
-
-    return (
-        <div
-            ref={wrapperRef}
-            className={`${styles.wrapper} ${disabled ? styles.disabled : ''}`}
-        >
-            <div
-                className={`${styles.trigger} ${open ? styles.open : ''}`}
-                onClick={() => !disabled && setOpen(!open)}
-            >
-                <span className={value ? styles.value : styles.placeholder}>
-                    {currentLabel}
-                </span>
-                <span className={styles.arrow}>
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                        <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                </span>
-            </div>
-            {open && mounted && (
-                <div className={styles.dropdown} style={dropdownStyle}>
-                    {options.map((option) => (
-                        <div
-                            key={option.key}
-                            className={`${styles.option} ${value === option.key ? styles.active : ''} ${hoveredKey === option.key ? styles.hovered : ''}`}
-                            onClick={() => handleSelect(option.key)}
-                            onMouseEnter={() => setHoveredKey(option.key)}
-                            onMouseLeave={() => setHoveredKey(null)}
-                        >
-                            <span className={styles.optionDot} />
-                            {option.label}
-                            {value === option.key && <div className={styles.pillBar} />}
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
-    );
+const parseRadixValue = (nextValue: string) => {
+    // Guard against Radix's "empty string means cleared" behavior and any unexpected values.
+    // Crucially, avoid Number('') => 0 which would incorrectly map to the first option.
+    if (!nextValue.startsWith(RADIX_VALUE_PREFIX)) return null;
+    const rawIndex = nextValue.slice(RADIX_VALUE_PREFIX.length);
+    if (rawIndex.length === 0) return null;
+    const optionIndex = Number(rawIndex);
+    if (!Number.isInteger(optionIndex) || optionIndex < 0) return null;
+    return optionIndex;
 };
+
+export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
+    (
+        {
+            options,
+            value,
+            onChange,
+            placeholder = '请选择',
+            disabled = false,
+            className,
+            ...rest
+        },
+        ref,
+    ) => {
+        const selectedIndex = options.findIndex((option) => option.key === value);
+        const selectedOption = selectedIndex >= 0 ? options[selectedIndex] : undefined;
+        const radixValue = selectedIndex >= 0 ? toRadixValue(selectedIndex) : undefined;
+
+        return (
+            <RadixSelect.Root
+                value={radixValue ?? ''}
+                onValueChange={(nextValue) => {
+                    const optionIndex = parseRadixValue(nextValue);
+                    if (optionIndex === null) return;
+                    const option = options[optionIndex];
+                    if (!option) return;
+                    onChange(option.key);
+                }}
+                disabled={disabled}
+            >
+                <div className={cn('animal-select-wrapper', disabled && 'animal-select-disabled')}>
+                    <RadixSelect.Trigger
+                        ref={ref}
+                        className={cn('animal-select-trigger', className)}
+                        aria-label={placeholder}
+                        {...rest}
+                    >
+                        <RadixSelect.Value
+                            className={selectedOption ? 'animal-select-value' : 'animal-select-placeholder'}
+                            placeholder={<span className="animal-select-placeholder">{placeholder}</span>}
+                        >
+                            {selectedOption?.label}
+                        </RadixSelect.Value>
+                        <RadixSelect.Icon className="animal-select-arrow">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                        </RadixSelect.Icon>
+                    </RadixSelect.Trigger>
+                    <RadixSelect.Portal>
+                        <RadixSelect.Content
+                            className="animal-select-content"
+                            position="popper"
+                            side="right"
+                            sideOffset={6}
+                            avoidCollisions
+                        >
+                            <RadixSelect.Viewport className="animal-select-viewport">
+                                {options.map((option, index) => (
+                                    <RadixSelect.Item
+                                        key={`${option.key}-${index}`}
+                                        value={toRadixValue(index)}
+                                        className="animal-select-item"
+                                    >
+                                        <span className="animal-select-dot" />
+                                        <RadixSelect.ItemText>{option.label}</RadixSelect.ItemText>
+                                    </RadixSelect.Item>
+                                ))}
+                            </RadixSelect.Viewport>
+                        </RadixSelect.Content>
+                    </RadixSelect.Portal>
+                </div>
+            </RadixSelect.Root>
+        );
+    },
+);
 
 Select.displayName = 'Select';
