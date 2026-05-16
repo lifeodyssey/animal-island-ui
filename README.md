@@ -27,6 +27,8 @@
 
 本项目是基于 React + TypeScript 实现的轻量 UI 组件库，设计风格灵感来源于任天堂《集合啦！动物森友会》游戏界面，用于个人前端技术练习与组件化开发学习。
 
+当前实现使用 Tailwind CSS v4 统一设计 token，并用 Radix UI primitives 承载 Switch、Checkbox、Select、Tabs、Collapse、Modal 等交互组件的无障碍行为。组件库仍沿用原版发布方式：单 npm 包、Vite library mode、ESM + CJS + 类型声明、单 CSS 入口与 `dist/files` 静态资源目录。
+
 所有视觉元素、布局、图标、动画均为独立设计实现，未直接使用任何任天堂官方美术素材、代码或资源文件。
 
 
@@ -63,6 +65,16 @@ function App() {
 }
 ```
 
+## 发布形态
+
+本包按原 `animal-island-ui` 的分发形态发布：
+
+- `animal-island-ui`：组件 JS 入口，提供 ESM、CJS 与 TypeScript 声明。
+- `animal-island-ui/style`：组件样式、设计 token 与字体资源入口。
+- `dist/files`：构建时抽出的字体、图片、SVG 等静态资源。
+
+发布包白名单只包含 `dist`、`README.md` 与 `AI_USAGE.md`。Storybook、Playwright tests、视觉截图基线和 Demo 构建产物不会进入 npm tarball。
+
 ## 文档
 面向不同场景的完整参考：
 
@@ -87,11 +99,20 @@ npm install
 # 启动 Demo 开发服务器
 npm run dev
 
+# 启动 Storybook 验收环境
+npm run storybook:test
+
 # 构建组件库
 npm run build
 
 # 构建 Demo 站点
 npm run build:demo
+
+# Storybook + Playwright + pix-to-pix 验收
+npm test
+
+# 检查 npm 发布内容
+npm pack --dry-run
 ```
 
 

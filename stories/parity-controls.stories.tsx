@@ -407,6 +407,16 @@ export const ControlsParity: Story = {
     },
 };
 
+export const ControlsPlaywrightParity: Story = {
+    render: () => (
+        <div style={pageStyle}>
+            <SwitchSection />
+            <CheckboxSection />
+            <SelectSection />
+        </div>
+    ),
+};
+
 export const SelectEmptyKeyParity: Story = {
     render: () => <SelectEmptyKeySection />,
     play: async ({ canvasElement }) => {
@@ -423,6 +433,10 @@ export const SelectEmptyKeyParity: Story = {
         await userEvent.click(emptyOptions[emptyOptions.length - 1]);
         await expect(canvas.getByTestId('select-empty-key-label')).toHaveTextContent('空键选项');
     },
+};
+
+export const SelectEmptyKeyPlaywrightParity: Story = {
+    render: () => <SelectEmptyKeySection />,
 };
 
 export const ControlsStateMatrixParity: Story = {

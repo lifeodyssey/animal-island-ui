@@ -1,5 +1,13 @@
 # animal-island-ui 设计提示词
 
+## 实现说明
+
+当前代码实现基于 Tailwind CSS v4 + Radix UI：
+
+- 设计 token、组件样式与动画集中在 `src/styles/tokens.css`，通过 `--animal-*` CSS custom properties 表达。
+- Switch、Checkbox、Select、Tabs、Collapse、Modal 使用 Radix UI primitives 承载无障碍语义、键盘行为、focus 与 portal。
+- npm 发布方式沿用原库：单包发布，`animal-island-ui` 提供 JS 入口，`animal-island-ui/style` 提供样式和字体资源。
+
 ## UI 工具提示词（适用于 v0 / Figma AI / Framer AI / Locofy）
 
 ```
@@ -222,10 +230,10 @@ Behavior: recursively truncates ReactNode tree by character count while preservi
           element structure, className, and inline styles. Returns a plain fragment
           (NO extra wrapping div/span) so it has ZERO layout impact.
 
-=== COMPONENT INVENTORY (17 exports from src/index.ts) ===
+=== COMPONENT INVENTORY (18 exports from src/index.ts) ===
 Interactive: Button, Input, Switch, Modal, Collapse, Select, Tabs, Checkbox
 Containers:  Card (13 NookPhone colors)
-Decorative:  Time, Phone, Footer, Divider, Cursor, Typewriter, Icon, CodeBlock
+Decorative:  Time, Phone, Footer, Divider, Cursor, Typewriter, Icon, CodeBlock, Loading
 
 === CHECKBOX (sizes small 18 / middle 22 / large 28 px) ===
 Unchecked box:  background rgb(247,243,223); border 2.5px solid #c4b89e; border-radius 8px

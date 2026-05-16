@@ -29,6 +29,8 @@
 
 This project is a lightweight UI component library built with React + TypeScript. The design style is inspired by Nintendo's "Animal Crossing: New Horizons" game interface, created for personal front-end technical practice and component development learning.
 
+The current implementation uses Tailwind CSS v4 for shared design tokens and Radix UI primitives for accessible Switch, Checkbox, Select, Tabs, Collapse, and Modal behavior. The package keeps the original distribution shape: a single npm package, Vite library mode, ESM + CJS + type declarations, one CSS style entry, and extracted static assets under `dist/files`.
+
 All visual elements, layouts, icons, and animations are independently designed and implemented, without directly using any official Nintendo art materials, code, or resource files.
 
 
@@ -65,6 +67,16 @@ function App() {
 }
 ```
 
+## Package Shape
+
+This package follows the original `animal-island-ui` publishing model:
+
+- `animal-island-ui`: JavaScript component entry with ESM, CJS, and TypeScript declarations.
+- `animal-island-ui/style`: component styles, design tokens, and bundled font assets.
+- `dist/files`: extracted fonts, images, SVGs, and other static assets.
+
+The npm package whitelist only includes `dist`, `README.md`, and `AI_USAGE.md`. Storybook, Playwright tests, visual snapshots, and demo build output are not published in the npm tarball.
+
 ## Documentation
 
 Complete reference for different scenarios:
@@ -90,11 +102,20 @@ npm install
 # Start Demo development server
 npm run dev
 
+# Start Storybook verification server
+npm run storybook:test
+
 # Build component library
 npm run build
 
 # Build Demo site
 npm run build:demo
+
+# Storybook + Playwright + pixel-to-pixel verification
+npm test
+
+# Inspect npm package contents
+npm pack --dry-run
 ```
 
 

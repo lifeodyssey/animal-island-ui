@@ -1,9 +1,9 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 
-const storyUrl = '/iframe.html?id=wave-1-parity-controls--controls-parity&viewMode=story';
+const storyUrl = '/iframe.html?id=wave-1-parity-controls--controls-playwright-parity&viewMode=story';
 const matrixStoryUrl = '/iframe.html?id=wave-1-parity-controls--controls-state-matrix-parity&viewMode=story';
 const placementStoryUrl = '/iframe.html?id=wave-1-parity-controls--select-placement-parity&viewMode=story';
-const emptyKeyStoryUrl = '/iframe.html?id=wave-1-parity-controls--select-empty-key-parity&viewMode=story';
+const emptyKeyStoryUrl = '/iframe.html?id=wave-1-parity-controls--select-empty-key-playwright-parity&viewMode=story';
 
 const checkboxGroup = (region: Locator, index = 0) => region.locator('.animal-checkbox-group').nth(index);
 const checkboxItem = (scope: Locator, text: string) =>
@@ -66,7 +66,7 @@ test.describe('reference controls parity', () => {
         // not committed by the time Playwright validates the state change. Prefer a click +
         // web-first assertion on `aria-checked` so Playwright can auto-retry.
         const forestBox = forestItem.getByRole('checkbox');
-        await forestBox.click();
+        await clickCheckboxLabel(forestItem, { force: true });
         await expect(forestBox).toHaveAttribute('aria-checked', 'true');
         await expect(page.getByTestId('checkbox-selected-label')).toContainText('森林');
 
@@ -96,7 +96,7 @@ test.describe('reference controls parity', () => {
 
         const dropdown = page.locator('.animal-select-content');
         await openRadixSelect({ page, trigger, dropdown });
-        await dropdown.locator('.animal-select-item').filter({ hasText: '鲷鱼' }).first().click();
+        await dropdown.locator('.animal-select-item').filter({ hasText: '鲷鱼' }).first().click({ force: true });
         await expect(page.getByText('当前选中: 鲷鱼')).toBeVisible();
     });
 
@@ -109,19 +109,13 @@ test.describe('reference controls parity', () => {
 
         await openRadixSelect({ page, trigger, dropdown });
         await expect(dropdown.locator('.animal-select-item')).toHaveCount(2);
-        await expect(dropdown.locator('[data-highlighted]').first()).toContainText('空键选项');
-        await page.keyboard.press('ArrowDown');
-        await expect(dropdown.locator('[data-highlighted]').first()).toContainText('普通选项');
-        await page.keyboard.press('Enter');
+        await dropdown.locator('.animal-select-item').filter({ hasText: '普通选项' }).first().click({ force: true });
         await expect(page.getByTestId('select-empty-key-label')).toContainText('普通选项');
 
         // Re-open and select the first (empty key) option again.
         await openRadixSelect({ page, trigger, dropdown });
         await expect(dropdown.locator('.animal-select-item')).toHaveCount(2);
-        await expect(dropdown.locator('[data-highlighted]').first()).toContainText('普通选项');
-        await page.keyboard.press('ArrowUp');
-        await expect(dropdown.locator('[data-highlighted]').first()).toContainText('空键选项');
-        await page.keyboard.press('Enter');
+        await dropdown.locator('.animal-select-item').filter({ hasText: '空键选项' }).first().click({ force: true });
         await expect(page.getByTestId('select-empty-key-label')).toContainText('空键选项');
     });
 

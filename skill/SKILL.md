@@ -24,9 +24,9 @@ animal-island-ui 是一套受《集合啦！动物森友会》启发的 React + 
 - 源码：`src/components/<ComponentName>/`
 - Demo 站：`demo/`
 - 构建：Vite (library mode) + `vite.config.ts`（库）/ `vite.config.demo.ts`（Demo）
-- 样式系统：Less Modules + `src/styles/variables.less` 设计 token
+- 样式系统：Tailwind CSS v4 layers + `src/styles/tokens.css`，通过稳定 `animal-*` 类名与 `--animal-*` CSS custom properties 复刻原样式
 
-### 全量组件清单（17 个）
+### 全量组件清单（18 个）
 
 从 `src/index.ts` 导出：
 
@@ -49,8 +49,9 @@ animal-island-ui 是一套受《集合啦！动物森友会》启发的 React + 
 | `Typewriter` | 打字机效果，保留 ReactNode 结构 | | ✓ |
 | `Tabs` | 标签页切换，叶子摆动动画可选 | ✓ | |
 | `CodeBlock` | JSX/TS 语法高亮代码块 | | ✓ |
+| `Loading` | 岛屿加载动画，支持 active 关闭遮罩 | | ✓ |
 
-类型导出：`ButtonProps/ButtonType/ButtonSize`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`FooterProps/FooterType`、`CollapseProps`、`CursorProps`、`TimeProps`、`PhoneProps`、`DividerProps`、`TypewriterProps`、`SelectProps/SelectOption`、`IconProps/IconName`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize`、`CodeBlockProps`。运行时值：`ICON_LIST`。
+类型导出：`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize/InputStatus`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`FooterProps/FooterType`、`CollapseProps`、`CursorProps`、`TimeProps`、`PhoneProps`、`DividerProps`、`TypewriterProps`、`SelectProps/SelectOption`、`IconProps/IconName`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize`、`CodeBlockProps`、`LoadingProps`。运行时值：`ICON_LIST`。
 
 ---
 
@@ -58,51 +59,48 @@ animal-island-ui 是一套受《集合啦！动物森友会》启发的 React + 
 
 ### 色彩系统
 
-```less
-// 主色（薄荷青绿）
-@primary-color:        #19c8b9;
-@primary-color-hover:  #3dd4c6;
-@primary-color-active: #11a89b;
-@primary-color-bg:     #e6f9f6;
+```css
+:root {
+  /* 主色（薄荷青绿） */
+  --animal-primary-color: #19c8b9;
+  --animal-primary-color-hover: #3dd4c6;
+  --animal-primary-color-active: #50b9ab;
+  --animal-primary-color-bg: #e6f9f6;
 
-// 文字（温暖棕色系）
-@text-color:           #794f27;    // 主文字（header/sidebar）
-@text-color-body:      #725d42;    // 正文（组件内文字）
-@text-color-secondary: #9f927d;    // 次级文字
-@text-color-muted:     #8a7b66;    // 浅棕（modal body）
-@text-color-disabled:  #c4b89e;    // 禁用
+  /* 文字（温暖棕色系） */
+  --animal-text-color: #794f27;
+  --animal-text-color-body: #725d42;
+  --animal-text-color-secondary: #9f927d;
+  --animal-text-color-muted: #8a7b66;
+  --animal-text-color-disabled: #c4b89e;
 
-// 边框
-@border-color:         #9f927d;
-@border-color-light:   #c4b89e;    // 输入框边框
-@border-color-hover:   #a89878;    // 输入框 hover
+  /* 边框 */
+  --animal-border-color: #aaa69d;
+  --animal-border-color-hover: #827157;
+  --animal-border-color-light: #e8e2d6;
 
-// 背景（奶油米白）
-@bg-color:             #f8f8f0;    // 主背景
-@bg-color-content:     rgb(247, 243, 223);  // 内容区（Modal、Card）
-@bg-color-secondary:   #f0e8d8;
-@bg-color-disabled:    #f0ece2;
-@bg-color-input:       rgb(247, 243, 223);  // 输入框背景
-@bg-color-input-dis:   #ece8dc;    // 输入框禁用
+  /* 背景（奶油米白） */
+  --animal-bg-color: #f8f8f0;
+  --animal-bg-color-content: rgb(247, 243, 223);
+  --animal-bg-color-secondary: #f0e8d8;
+  --animal-bg-color-disabled: #f0ece2;
 
-// 状态色
-@success-color:        #6fba2c;
-@success-color-active: #5a9e1e;
-@warning-color:        #f5c31c;
-@warning-color-active: #dba90e;
-@error-color:          #e05a5a;
-@error-color-active:   #c94444;
+  /* 状态色 */
+  --animal-success-color: #6fba2c;
+  --animal-success-color-active: #5a9e1e;
+  --animal-warning-color: #f5c31c;
+  --animal-warning-color-active: #dba90e;
+  --animal-error-color: #e05a5a;
+  --animal-error-color-active: #c94444;
 
-// 游戏特殊色
-@focus-yellow:         #ffcc00;    // 焦点高亮（非蓝色）
-@focus-yellow-dark:    #e0b800;    // 焦点阴影
-@sidebar-active-bg:    #B7C6E5;    // 侧边栏选中背景
-@sidebar-hover-bg:     #d6dff0;    // 侧边栏 hover 背景
+  /* 游戏特殊色 */
+  --animal-focus-yellow: #ffcc00;
+  --animal-focus-yellow-dark: #e0b800;
 
-// 3D 阴影色
-@shadow-btn:           #bdaea0;    // 按钮 3D 阴影
-@shadow-input:         #d4c9b4;    // 输入框 3D 阴影
-@shadow-switch-on:     #5a9e1e;    // Switch 开启 3D 阴影
+  /* 3D 阴影 */
+  --animal-shadow-press: 0 5px 0 0 #bdaea0;
+  --animal-shadow-input: 0 3px 0 0 #d4c9b4;
+}
 ```
 
 **NookPhone 应用调色板**（Card `color` prop 可选值）：
@@ -139,7 +137,7 @@ animal-island-ui 是一套受《集合啦！动物森友会》启发的 React + 
 />
 ```
 
-或在 CSS / Less 入口文件顶部：
+或在 CSS 入口文件顶部：
 
 ```css
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap');
@@ -832,13 +830,13 @@ padding: 12px 20px; gap: 12px;
 <Footer type="sea" />   // 海浪（高 80px）
 ```
 
-```less
-.footer       { width: 100%; height: 80px;
-                background: url('./img/footer-sea.svg') center/contain no-repeat; }
-.tree         { background-image: url('./img/footer-tree.webp');
-                height: 60px;
-                background-size: cover;
-                background-position: bottom center; }
+```css
+.animal-footer { width: 100%; height: 80px;
+                 background: url('./img/footer-sea.svg') center/contain no-repeat; }
+.animal-footer-tree { background-image: url('./img/footer-tree.webp');
+                      height: 60px;
+                      background-size: cover;
+                      background-position: bottom center; }
 ```
 
 - `sea`：SVG 海浪插画，`viewBox="0 0 1440 186"`，多色（珊瑚 `#EC7175`、海蓝 `#327A93`、浅蓝 `#98D2E3`、深青 `#008077` 等）。
@@ -856,13 +854,13 @@ padding: 12px 20px; gap: 12px;
 <Divider type="wave-yellow" />
 ```
 
-```less
-.divider { width: 100%; height: 12px;
-           background: url('./img/divider-line-brown.svg') center/contain no-repeat; }
-.line-teal   { background-image: url('./img/divider-line-teal.svg'); }
-.line-white  { background-image: url('./img/divider-line-white.png'); }
-.line-yellow { background-image: url('./img/divider-line-yellow.svg'); }
-.wave-yellow { background-image: url('./img/wave-yellow.svg'); }
+```css
+.animal-divider { width: 100%; height: 12px;
+                  background: url('./img/divider-line-brown.svg') center/contain no-repeat; }
+.animal-divider-line-teal { background-image: url('./img/divider-line-teal.svg'); }
+.animal-divider-line-white { background-image: url('./img/divider-line-white.png'); }
+.animal-divider-line-yellow { background-image: url('./img/divider-line-yellow.svg'); }
+.animal-divider-wave-yellow { background-image: url('./img/wave-yellow.svg'); }
 ```
 
 默认 SVG 色值参考：`#D8D0C3`（米褐），`viewBox="0 0 297 14"`。
@@ -1005,7 +1003,7 @@ Props：
 | `style` | `CSSProperties` | — | 会合并覆盖默认深色主题 |
 | `className` | `string` | — | 自定义类名 |
 
-**默认主题（写死在组件，不走 Less）：**
+**默认主题（组件内置，Tailwind/Radix 迁移后仍保持该视觉）：**
 
 ```css
 padding: 20px 24px;
@@ -1038,6 +1036,20 @@ tab-size: 4;
 | default  | `#e8d5bc` | 其余文本 |
 
 > 不支持 `language` prop；非 JS/TS 代码（Python/Shell/SQL）会按通用规则着色，显示可能不准确。不带 copy 按钮、行号或折行。
+
+---
+
+### Loading
+
+Props：
+
+| name | type | default | 说明 |
+|---|---|---|---|
+| `active` | `boolean` | `true` | `false` 时播放遮罩关闭动画并隐藏容器 |
+| `className` | `string` | — | 合并到 `.animal-loading-container` |
+| `style` | `CSSProperties` | — | 合并到 `.animal-loading-container` |
+
+视觉要点：内置 SVG 岛屿插画，容器类名为 `.animal-loading-wrapper` / `.animal-loading-container`，关闭态通过 `--mask-r` 与 `@property --mask-r` 做圆形遮罩扩散；动画脚本作为 raw asset 进入 bundle，发布时随库一并打包。
 
 ---
 
@@ -1279,58 +1291,48 @@ color: #e8d5bc; line-height: 1.8;
 ```
 src/components/MyComponent/
 ├── MyComponent.tsx          # 组件逻辑（必须设置 displayName）
-├── myComponent.module.less  # CSS Modules 样式
 └── index.ts                 # 统一导出
 ```
 
 `src/index.ts` 追加：
 ```ts
-// 方式 A：组件用 default export
-export { default as MyComponent } from './components/MyComponent'
-export type { MyComponentProps } from './components/MyComponent/MyComponent'
-
-// 方式 B：组件用 named export（如 Checkbox / CodeBlock / Select / Icon / Tabs 当前采用）
 export { MyComponent } from './components/MyComponent'
 export type { MyComponentProps } from './components/MyComponent'
 ```
-> 仓库内两种风格并存；新增组件选一种即可，只要 `src/index.ts` 能成功 re-export。
+> 新增组件优先使用 named export + `React.forwardRef`；类名保持稳定 `animal-*`，方便 Storybook 和 Playwright 断言。
 
-Less 模板（直接使用设计 token）：
+CSS 模板（写入 `src/styles/tokens.css` 的 `@layer components`）：
 
-```less
-@import '../../styles/variables.less';
-
-.container {
-  background: @bg-color-content;      // rgb(247,243,223)
-  color: @text-color-body;            // #725d42
-  border: @border-width solid @border-color-light;  // 2px solid #c4b89e
-  border-radius: @border-radius-base; // 18px
-  font-family: @font-family;
+```css
+.animal-my-component {
+  background: var(--animal-bg-color-content);
+  color: var(--animal-text-color-body);
+  border: var(--animal-border-width) solid var(--animal-border-color);
+  border-radius: var(--animal-radius-base);
+  font-family: var(--animal-font-family);
   font-weight: 500;
   letter-spacing: 0.01em;
-  transition: all @motion-duration-base @motion-ease;
-  box-shadow: 0 3px 0 0 @shadow-input; // #d4c9b4
+  transition: all var(--animal-motion-duration-base) var(--animal-motion-ease);
+  box-shadow: var(--animal-shadow-input);
+}
 
-  &:hover:not(.disabled) {
-    border-color: @border-color-hover; // #a89878
-    transform: translateY(-1px);
-    box-shadow: 0 4px 0 0 @shadow-input;
-  }
+.animal-my-component:hover:not(.animal-my-component-disabled) {
+  border-color: var(--animal-border-color-hover);
+  transform: translateY(-1px);
+}
 
-  &:focus-within {
-    border-color: @focus-yellow;       // #ffcc00
-    box-shadow: 0 3px 0 0 @focus-yellow-dark,
-                0 0 0 3px rgba(255, 204, 0, 0.15);
-  }
+.animal-my-component:focus-within {
+  border-color: var(--animal-focus-yellow);
+  box-shadow: 0 3px 0 0 var(--animal-focus-yellow-dark),
+              0 0 0 3px rgba(255, 204, 0, 0.15);
+}
 
-  &.disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background: @bg-color-disabled;
-    color: @text-color-disabled;
-    border-color: @shadow-input;
-    box-shadow: none;
-  }
+.animal-my-component-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--animal-bg-color-disabled);
+  color: var(--animal-text-color-disabled);
+  box-shadow: none;
 }
 ```
 
@@ -1338,8 +1340,7 @@ TSX 模板：
 
 ```tsx
 import React from 'react'
-import styles from './myComponent.module.less'
-import classNames from 'classnames'
+import { cn } from '../../utils/cn'
 
 export interface MyComponentProps {
   /** 尺寸 */
@@ -1354,29 +1355,24 @@ export interface MyComponentProps {
   style?: React.CSSProperties
 }
 
-const MyComponent: React.FC<MyComponentProps> = ({
-  size = 'middle',
-  disabled = false,
-  children,
-  className,
-  style,
-}) => {
-  const cls = classNames(
-    styles.container,
-    styles[size],
-    { [styles.disabled]: disabled },
-    className
-  )
-
-  return (
-    <div className={cls} style={style}>
+export const MyComponent = React.forwardRef<HTMLDivElement, MyComponentProps>(
+  ({ size = 'middle', disabled = false, children, className, style }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        'animal-my-component',
+        `animal-my-component-${size}`,
+        disabled && 'animal-my-component-disabled',
+        className,
+      )}
+      style={style}
+    >
       {children}
     </div>
   )
-}
+)
 
 MyComponent.displayName = 'MyComponent'
-export default MyComponent
 ```
 
 ---
@@ -1424,6 +1420,7 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
   select:         { title: 'Select 选择器',     desc: '...' },
   checkbox:       { title: 'Checkbox 多选框',   desc: '...' },
   codeblock:      { title: 'CodeBlock 代码高亮', desc: '...' },
+  loading:        { title: 'Loading 加载',       desc: '...' },
 }
 ```
 
@@ -1438,13 +1435,15 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
 - [ ] 所有 props 有 JSDoc 注释（中文 OK）
 - [ ] 有状态组件同时支持受控（`value`）和非受控（`defaultValue`）模式
 - [ ] `disabled` 状态：cursor: not-allowed + opacity 0.5~0.6 + 移除阴影
-- [ ] 颜色优先引用 `variables.less` token，避免硬编码 hex
+- [ ] 颜色优先引用 `src/styles/tokens.css` 中的 `--animal-*` token，避免散落硬编码 hex
 - [ ] 阴影使用暖色调（`#bdaea0` / `#d4c9b4` / `rgba(61,52,40,...)`），非冷黑
 - [ ] hover 时 `translateY(-1px 或 -4px)` + 阴影加深
 - [ ] active 时 `translateY(2px)` + 阴影减小
 - [ ] 焦点：输入类用 `#ffcc00`，按钮类用 `#19c8b9`
-- [ ] 动画使用 `@motion-duration-*` 和 `@motion-ease` token
+- [ ] 动画使用 `--animal-motion-duration-*` 和 `--animal-motion-ease` token
 - [ ] 组件从 `src/index.ts` 导出
 - [ ] Demo 页创建于 `demo/components/`
 - [ ] Demo 在 `demo/ComponentPage.tsx` 中注册
 - [ ] `demo/pageInfo.ts` 追加 `{ title, desc }` 元信息
+- [ ] Storybook parity/matrix story 已覆盖主要变体和状态
+- [ ] Playwright 交互测试和必要的 `toHaveScreenshot()` 局部视觉基线已补齐
