@@ -44,6 +44,7 @@
         "test:playwright": "playwright test tests/playwright-*.spec.ts",
         "test:migration": "node --test tests/migration.test.mjs",
         "test:visual": "playwright test tests/visual-*.spec.ts",
+        "codex:upstream-check": "node scripts/check-upstream-sync.mjs",
         "prepublishOnly": "npm run build",
         "deploy": "npm run build:demo && gh-pages -d demo-dist"
     },
