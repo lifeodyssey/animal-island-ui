@@ -1,7 +1,7 @@
 {
-    "name": "animal-island-ui",
+    "name": "animal-island-ui-tailwind",
     "version": "0.8.0",
-    "description": "for learning purpose only, A nature-inspired React component library",
+    "description": "Tailwind CSS v4 + Radix UI modernization of Animal Island UI",
     "type": "module",
     "main": "dist/cjs/index.cjs",
     "module": "dist/es/index.js",
@@ -18,20 +18,22 @@
     "files": [
         "dist",
         "AI_USAGE.md",
-        "README.md"
+        "DESIGN_PROMPT.md",
+        "README.md",
+        "skill"
     ],
     "sideEffects": [
         "**/*.css"
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/guokaigdg/animal-island-ui"
+        "url": "https://github.com/lifeodyssey/animal-island-ui"
     },
-    "homepage": "https://github.com/guokaigdg/animal-island-ui#readme",
+    "homepage": "https://github.com/lifeodyssey/animal-island-ui#readme",
     "bugs": {
-        "url": "https://github.com/guokaigdg/animal-island-ui/issues"
+        "url": "https://github.com/lifeodyssey/animal-island-ui/issues"
     },
-    "author": "guokaigdg",
+    "author": "lifeodyssey",
     "scripts": {
         "dev": "vite",
         "build": "vite build && tsc --project tsconfig.build.json --emitDeclarationOnly",
@@ -45,6 +47,8 @@
         "test:migration": "node --test tests/migration.test.mjs",
         "test:visual": "playwright test tests/visual-*.spec.ts",
         "codex:upstream-check": "node scripts/check-upstream-sync.mjs",
+        "verify": "npm run build && npm pack --dry-run && npm test && npm run build:demo && npm run build:storybook && tsc --noEmit",
+        "publish:dry-run": "npm publish --dry-run",
         "prepublishOnly": "npm run build",
         "deploy": "npm run build:demo && gh-pages -d demo-dist"
     },
@@ -98,6 +102,9 @@
         "typescript",
         "theme",
         "animal-island-ui",
+        "animal-island-ui-tailwind",
+        "tailwindcss",
+        "radix-ui",
         "nature"
     ],
     "license": "MIT"

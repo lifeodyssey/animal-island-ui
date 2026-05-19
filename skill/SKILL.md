@@ -1,9 +1,9 @@
 ---
 name: animal-island-ui-style
 description: >
-  使用 animal-island-ui 设计风格创建 React UI 界面或组件。当用户需要：
+  使用 animal-island-ui-tailwind / animal-island-ui 设计风格创建 React UI 界面或组件。当用户需要：
   (1) 用动物森友会风格创建 UI 页面或组件；
-  (2) 使用 animal-island-ui 组件库开发界面；
+  (2) 使用 animal-island-ui-tailwind 组件库开发界面；
   (3) 构建温馨自然、圆润可爱风格的 React 界面；
   (4) 复现或扩展 animal-island-ui 的视觉语言；
   (5) 提问"动物森友会风格"、"animal island 风格"、"可爱圆润风格"的 UI 时，务必使用此 skill。
@@ -18,13 +18,14 @@ description: >
 
 ## 概述
 
-animal-island-ui 是一套受《集合啦！动物森友会》启发的 React + TypeScript UI 组件库。
+animal-island-ui-tailwind 是 `animal-island-ui` 的 Tailwind CSS v4 + Radix UI 现代化实现，保留原库受《集合啦！动物森友会》启发的 React + TypeScript UI 视觉语言，并以 `animal-island-ui-tailwind` 作为 npm 包名发布。
 设计语言核心：**温暖大地色系 + 大圆角 pill 形 + 游戏按键立体感 + 柔和动效 + 有机不规则形状**。
 
 - 源码：`src/components/<ComponentName>/`
 - Demo 站：`demo/`
 - 构建：Vite (library mode) + `vite.config.ts`（库）/ `vite.config.demo.ts`（Demo）
 - 样式系统：Tailwind CSS v4 layers + `src/styles/tokens.css`，通过稳定 `animal-*` 类名与 `--animal-*` CSS custom properties 复刻原样式
+- npm 入口：`animal-island-ui-tailwind`；样式入口：`animal-island-ui-tailwind/style`
 
 ### 全量组件清单（18 个）
 

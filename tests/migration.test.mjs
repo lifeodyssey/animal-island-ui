@@ -25,6 +25,9 @@ test('migration dependencies include Tailwind, Radix, Storybook, Playwright, and
   const pkg = JSON.parse(read('package.json'));
   const deps = { ...pkg.dependencies, ...pkg.devDependencies };
 
+  assert.equal(pkg.name, 'animal-island-ui-tailwind');
+  assert.equal(pkg.exports['./style'], './dist/index.css');
+  assert.equal(pkg.exports['./dist/index.css'], './dist/index.css');
   assert.equal(pkg.peerDependencies.react, '>=19.0.0');
   assert.equal(pkg.peerDependencies['react-dom'], '>=19.0.0');
   assert.match(pkg.devDependencies.react, /^\^19\./);

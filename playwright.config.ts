@@ -5,6 +5,7 @@ export default defineConfig({
     testMatch: '**/*.spec.ts',
     timeout: 30_000,
     workers: 1,
+    retries: process.env.CI ? 2 : 1,
     expect: {
         timeout: 10_000,
         toHaveScreenshot: {

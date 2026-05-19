@@ -1,10 +1,10 @@
-# Contributing to animal-island-ui
+# Contributing to animal-island-ui-tailwind
 
-感谢你对 animal-island-ui 的关注！欢迎提交 Issue 和 Pull Request。
+感谢你对 `animal-island-ui-tailwind` 的关注！欢迎提交 Issue 和 Pull Request。
 
 ## 提交 Issue
 
-- 使用 [GitHub Issues](https://github.com/guokaigdg/animal-island-ui/issues) 提交 Bug 报告或功能建议
+- 使用 [GitHub Issues](https://github.com/lifeodyssey/animal-island-ui/issues) 提交 Bug 报告或功能建议
 - Bug 报告请附上：复现步骤、预期行为、实际行为、浏览器/系统环境
 - 功能建议请说明使用场景和期望的 API 设计
 
@@ -24,7 +24,7 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/guokaigdg/animal-island-ui.git
+git clone https://github.com/lifeodyssey/animal-island-ui.git
 cd animal-island-ui
 
 # 安装依赖
@@ -104,12 +104,14 @@ tests/                      # Playwright 交互测试与 pix-to-pix 视觉回归
 
 ## 发布检查
 
-本项目沿用原库单包发布方式。发布前必须确认：
+本项目以 `animal-island-ui-tailwind` 发布，同时沿用原库单包分发方式。发布前必须确认：
 
 1. `npm run build` 生成 `dist/es/index.js`、`dist/cjs/index.cjs`、`dist/types/index.d.ts` 和 `dist/index.css`
-2. `npm pack --dry-run` 只包含 `dist`、`README.md`、`AI_USAGE.md` 与 `package.json`
+2. `npm pack --dry-run` 只包含 `dist`、`README.md`、`AI_USAGE.md`、`DESIGN_PROMPT.md`、`skill` 与 `package.json`
 3. `dist/files` 包含字体和组件资源，且不包含 `.woff` fallback
 4. `npm test`、`npm run build:demo`、`npm run build:storybook`、`npx tsc --noEmit` 均通过
+
+自动发布使用 `.github/workflows/release.yml`。仓库需要配置 `NPM_TOKEN` secret，具体步骤见 [`PUBLISHING.md`](./PUBLISHING.md)。
 
 ## License
 

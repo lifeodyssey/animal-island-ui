@@ -1,12 +1,12 @@
-# animal-island-ui 设计提示词
+# animal-island-ui-tailwind 设计提示词
 
 ## 实现说明
 
-当前代码实现基于 Tailwind CSS v4 + Radix UI：
+当前代码实现是 `animal-island-ui` 视觉语言的 Tailwind CSS v4 + Radix UI 现代化版本：
 
 - 设计 token、组件样式与动画集中在 `src/styles/tokens.css`，通过 `--animal-*` CSS custom properties 表达。
 - Switch、Checkbox、Select、Tabs、Collapse、Modal 使用 Radix UI primitives 承载无障碍语义、键盘行为、focus 与 portal。
-- npm 发布方式沿用原库：单包发布，`animal-island-ui` 提供 JS 入口，`animal-island-ui/style` 提供样式和字体资源。
+- npm 发布方式沿用原库：单包发布，`animal-island-ui-tailwind` 提供 JS 入口，`animal-island-ui-tailwind/style` 提供样式和字体资源。
 
 ## UI 工具提示词（适用于 v0 / Figma AI / Framer AI / Locofy）
 

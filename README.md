@@ -12,8 +12,9 @@
 
 <div align="center">
     <a href="https://github.com/lifeodyssey/animal-island-ui"><img src="https://img.shields.io/github/stars/lifeodyssey/animal-island-ui?style=flat-square" alt="Stars"></a>
+    <a href="https://github.com/lifeodyssey/animal-island-ui/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/lifeodyssey/animal-island-ui/ci.yml?branch=main&style=flat-square" alt="CI"></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
-    <a href="https://www.npmjs.com/package/animal-island-ui"><img src="https://img.shields.io/npm/dm/animal-island-ui.svg?style=flat-square" alt="npm downloads"></a>
+    <a href="https://www.npmjs.com/package/animal-island-ui-tailwind"><img src="https://img.shields.io/npm/dm/animal-island-ui-tailwind.svg?style=flat-square" alt="npm downloads"></a>
     <a href="https://github.com/guokaigdg/animal-island-ui"><img src="https://img.shields.io/badge/upstream-guokaigdg%2Fanimal--island--ui-19c8b9?style=flat-square" alt="Upstream"></a>
 </div>
 
@@ -25,7 +26,7 @@
 
 ## 项目定位
 
-本仓库是 [`guokaigdg/animal-island-ui`](https://github.com/guokaigdg/animal-island-ui) 的现代化重构 fork。目标不是重新设计一套 UI，而是在尽量保留原组件 API、视觉表现、静态资源和 npm 发布形态的前提下，把内部实现迁移到 Tailwind CSS v4 + Radix UI，并补齐可复现的 Storybook / Playwright 验收体系。
+本仓库是 [`guokaigdg/animal-island-ui`](https://github.com/guokaigdg/animal-island-ui) 的现代化重构 fork，并以 `animal-island-ui-tailwind` 作为新的 npm 包名发布。目标不是重新设计一套 UI，而是在尽量保留原组件 API、视觉表现、静态资源和 npm 发布形态的前提下，把内部实现迁移到 Tailwind CSS v4 + Radix UI，并补齐可复现的 Storybook / Playwright 验收体系。
 
 这不是上游仓库的正式版本。我们已经在上游创建 RFC Issue：[`guokaigdg/animal-island-ui#8`](https://github.com/guokaigdg/animal-island-ui/issues/8)，用于询问维护者是否接受这个方向，以及后续 PR 应该如何拆分。
 
@@ -64,17 +65,17 @@
 
 ## 安装与使用
 
-如果该版本已发布到 npm，可以按原包名安装：
+如果该版本已发布到 npm，可以按新包名安装：
 
 ```bash
-npm install animal-island-ui
+npm install animal-island-ui-tailwind
 ```
 
 必须导入样式入口，否则组件没有样式、token 和字体：
 
 ```tsx
-import { Button, Card } from 'animal-island-ui';
-import 'animal-island-ui/style';
+import { Button, Card } from 'animal-island-ui-tailwind';
+import 'animal-island-ui-tailwind/style';
 
 export function App() {
     return (
@@ -95,14 +96,14 @@ npm pack
 
 ## 发布形态
 
-本 fork 刻意保持原 `animal-island-ui` 的发布方式：
+本 fork 以新包名发布，但刻意保持原 `animal-island-ui` 的分发形态：
 
-- 单 npm 包：`animal-island-ui`
+- 单 npm 包：`animal-island-ui-tailwind`
 - ESM 入口：`dist/es/index.js`
 - CJS 入口：`dist/cjs/index.cjs`
 - 类型声明：`dist/types/index.d.ts`
-- 样式入口：`animal-island-ui/style`
-- 兼容入口：`animal-island-ui/dist/index.css`
+- 样式入口：`animal-island-ui-tailwind/style`
+- 兼容入口：`animal-island-ui-tailwind/dist/index.css`
 - 静态资源：`dist/files`
 
 `package.json` 的发布白名单只包含：
@@ -110,8 +111,25 @@ npm pack
 - `dist`
 - `README.md`
 - `AI_USAGE.md`
+- `DESIGN_PROMPT.md`
+- `skill`
 
 Storybook、Playwright tests、截图基线、Demo 构建产物和本地开发文件不会进入 npm tarball。
+
+`skill/SKILL.md` 同时保留在仓库和 npm tarball 中。按 `skills` CLI 文档，安装 Skill 的主路径是从 GitHub / Git URL / 本地路径读取 source；仓库发布后可用：
+
+```bash
+npx skills add lifeodyssey/animal-island-ui --skill animal-island-ui-style
+```
+
+## CI/CD 与发布
+
+仓库包含两条 GitHub Actions：
+
+- `CI`：在 PR 和 `main` push 上运行 type check、library build、完整测试、Demo build、Storybook build 和 `npm pack --dry-run`。
+- `Release`：在 `v*.*.*` tag 或手动触发时复用同一套检查；首发可通过带 bypass 2FA 的 `NPM_TOKEN` 发布，后续也支持 npm trusted publishing / GitHub OIDC token-free 发布。
+
+首次 CI 发布前建议在 GitHub 仓库中配置 `NPM_TOKEN` secret；包创建后可在 npm 设置 trusted publisher 并移除长期 token。完整流程见 [`PUBLISHING.md`](./PUBLISHING.md)。
 
 ## 本地开发
 
@@ -172,6 +190,11 @@ npm pack --dry-run
 | [`DESIGN_PROMPT.md`](./DESIGN_PROMPT.md) | 视觉复刻提示词与设计 token 说明。 |
 | [`skill/SKILL.md`](./skill/SKILL.md) | 像素级样式规范 Skill，覆盖组件 CSS、token、Demo 布局和新组件 Checklist。 |
 | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | 本 fork 的开发与贡献指南。 |
+| [`PUBLISHING.md`](./PUBLISHING.md) | npm 发布步骤、GitHub Actions 发布方式和 release 前置检查。 |
+| [`CHANGELOG.md`](./CHANGELOG.md) | 版本变更记录。 |
+| [`SECURITY.md`](./SECURITY.md) | 安全问题报告方式。 |
+| [`SUPPORT.md`](./SUPPORT.md) | 获取支持和提交问题的说明。 |
+| [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) | 社区协作准则。 |
 | [`docs/README.en.md`](./docs/README.en.md) | 英文 README。 |
 
 ## 版权与免责声明

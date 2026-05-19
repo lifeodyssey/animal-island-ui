@@ -3,7 +3,8 @@
 ## Goal
 
 Maintain a 1:1 Tailwind CSS v4 + Radix UI implementation of
-`animal-island-ui` while preserving the original package distribution shape.
+`animal-island-ui` while publishing this fork as `animal-island-ui-tailwind`
+and preserving the original package distribution shape.
 
 The original Less implementation is used as the reference source for API,
 visual parity, assets, colors, spacing, motion, and component behavior. The
@@ -69,6 +70,7 @@ The library currently exposes 18 components:
 
 Keep the original single-package distribution model:
 
+- npm package name: `animal-island-ui-tailwind`
 - `main`: `dist/cjs/index.cjs`
 - `module`: `dist/es/index.js`
 - `types`: `dist/types/index.d.ts`
@@ -76,7 +78,7 @@ Keep the original single-package distribution model:
 - `exports["./style"]`: `dist/index.css`
 - `exports["./dist/index.css"]`: `dist/index.css`
 - Assets emitted to `dist/files`
-- npm `files`: `dist`, `README.md`, `AI_USAGE.md`
+- npm `files`: `dist`, `README.md`, `AI_USAGE.md`, `DESIGN_PROMPT.md`, `skill`
 
 Vite should continue to build ESM and CJS outputs. Only React, React DOM, and
 `react/jsx-runtime` are externalized. Radix UI, `classnames`, and
@@ -99,14 +101,14 @@ npx tsc --noEmit
 For consumer entry smoke tests, verify:
 
 ```ts
-import { Button } from 'animal-island-ui';
-import 'animal-island-ui/style';
+import { Button } from 'animal-island-ui-tailwind';
+import 'animal-island-ui-tailwind/style';
 ```
 
 and CJS:
 
 ```js
-const { Button } = require('animal-island-ui');
+const { Button } = require('animal-island-ui-tailwind');
 ```
 
 When CJS is checked directly in Node, stub browser asset extensions because this

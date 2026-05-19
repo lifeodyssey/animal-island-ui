@@ -12,8 +12,9 @@
 
 <div align="center">
     <a href="https://github.com/lifeodyssey/animal-island-ui"><img src="https://img.shields.io/github/stars/lifeodyssey/animal-island-ui?style=flat-square" alt="Stars"></a>
+    <a href="https://github.com/lifeodyssey/animal-island-ui/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/lifeodyssey/animal-island-ui/ci.yml?branch=main&style=flat-square" alt="CI"></a>
     <a href="../LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
-    <a href="https://www.npmjs.com/package/animal-island-ui"><img src="https://img.shields.io/npm/dm/animal-island-ui.svg?style=flat-square" alt="npm downloads"></a>
+    <a href="https://www.npmjs.com/package/animal-island-ui-tailwind"><img src="https://img.shields.io/npm/dm/animal-island-ui-tailwind.svg?style=flat-square" alt="npm downloads"></a>
     <a href="https://github.com/guokaigdg/animal-island-ui"><img src="https://img.shields.io/badge/upstream-guokaigdg%2Fanimal--island--ui-19c8b9?style=flat-square" alt="Upstream"></a>
 </div>
 
@@ -25,7 +26,7 @@
 
 ## Project Positioning
 
-This repository is a modernization fork of [`guokaigdg/animal-island-ui`](https://github.com/guokaigdg/animal-island-ui). The goal is not to redesign the UI. The goal is to preserve the original component API, visual appearance, static assets, and npm distribution shape while migrating the internals to Tailwind CSS v4 + Radix UI and adding a reproducible Storybook / Playwright verification workflow.
+This repository is a modernization fork of [`guokaigdg/animal-island-ui`](https://github.com/guokaigdg/animal-island-ui), published under the new npm package name `animal-island-ui-tailwind`. The goal is not to redesign the UI. The goal is to preserve the original component API, visual appearance, static assets, and npm distribution shape while migrating the internals to Tailwind CSS v4 + Radix UI and adding a reproducible Storybook / Playwright verification workflow.
 
 This is not an official upstream release. We opened an upstream RFC issue, [`guokaigdg/animal-island-ui#8`](https://github.com/guokaigdg/animal-island-ui/issues/8), to ask whether the maintainer is interested in this direction and how future PRs should be split.
 
@@ -64,17 +65,17 @@ The library currently covers 18 components:
 
 ## Installation And Usage
 
-If this version has been published to npm, install it with the original package name:
+If this version has been published to npm, install it with the new package name:
 
 ```bash
-npm install animal-island-ui
+npm install animal-island-ui-tailwind
 ```
 
 The style entry is required. Without it, components will not include styles, tokens, or fonts:
 
 ```tsx
-import { Button, Card } from 'animal-island-ui';
-import 'animal-island-ui/style';
+import { Button, Card } from 'animal-island-ui-tailwind';
+import 'animal-island-ui-tailwind/style';
 
 export function App() {
     return (
@@ -95,14 +96,15 @@ npm pack
 
 ## Package Shape
 
-This fork intentionally keeps the original `animal-island-ui` publishing model:
+This fork publishes under a new package name while intentionally preserving the
+original `animal-island-ui` distribution model:
 
-- Single npm package: `animal-island-ui`
+- Single npm package: `animal-island-ui-tailwind`
 - ESM entry: `dist/es/index.js`
 - CJS entry: `dist/cjs/index.cjs`
 - Type declarations: `dist/types/index.d.ts`
-- Style entry: `animal-island-ui/style`
-- Compatibility style entry: `animal-island-ui/dist/index.css`
+- Style entry: `animal-island-ui-tailwind/style`
+- Compatibility style entry: `animal-island-ui-tailwind/dist/index.css`
 - Static assets: `dist/files`
 
 The `package.json` publish whitelist includes only:
@@ -110,8 +112,31 @@ The `package.json` publish whitelist includes only:
 - `dist`
 - `README.md`
 - `AI_USAGE.md`
+- `DESIGN_PROMPT.md`
+- `skill`
 
 Storybook, Playwright tests, screenshot baselines, demo build output, and local development files are not included in the npm tarball.
+
+`skill/SKILL.md` is kept in both the repository and the npm tarball. Per the `skills` CLI documentation, Skills are installed from a GitHub, Git URL, or local source; after the repository is pushed, install it with:
+
+```bash
+npx skills add lifeodyssey/animal-island-ui --skill animal-island-ui-style
+```
+
+## CI/CD And Release
+
+The repository includes two GitHub Actions workflows:
+
+- `CI`: runs type checking, the library build, the full test suite, demo build,
+  Storybook build, and `npm pack --dry-run` on pull requests and `main` pushes.
+- `Release`: runs the same verification when a `v*.*.*` tag is pushed or the
+  workflow is triggered manually. The first publish can use an `NPM_TOKEN` with
+  bypass 2FA, and later releases can use npm trusted publishing / GitHub OIDC
+  without a long-lived token.
+
+Before the first automated release, add an npm granular token as the GitHub
+repository secret `NPM_TOKEN`. After the package exists, configure npm trusted
+publishing and remove the long-lived token if desired. See [`PUBLISHING.md`](../PUBLISHING.md) for the publishing flow.
 
 ## Local Development
 
@@ -172,6 +197,11 @@ Current RFC: [`guokaigdg/animal-island-ui#8`](https://github.com/guokaigdg/anima
 | [`DESIGN_PROMPT.md`](../DESIGN_PROMPT.md) | Visual reproduction prompt and design token reference. |
 | [`skill/SKILL.md`](../skill/SKILL.md) | Pixel-level style specification Skill for component CSS, tokens, demo layout, and new-component checklist. |
 | [`CONTRIBUTING.md`](../CONTRIBUTING.md) | Development and contribution guide for this fork. |
+| [`PUBLISHING.md`](../PUBLISHING.md) | npm publishing steps, GitHub Actions release flow, and release prerequisites. |
+| [`CHANGELOG.md`](../CHANGELOG.md) | Version history. |
+| [`SECURITY.md`](../SECURITY.md) | Security reporting policy. |
+| [`SUPPORT.md`](../SUPPORT.md) | Support and issue guidance. |
+| [`CODE_OF_CONDUCT.md`](../CODE_OF_CONDUCT.md) | Community collaboration expectations. |
 | [`README.md`](../README.md) | Chinese README. |
 
 ## Copyright And Disclaimer
