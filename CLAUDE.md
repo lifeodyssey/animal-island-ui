@@ -91,7 +91,6 @@ Use these checks before merging packaging, component, or visual parity changes:
 npm run build
 npm pack --dry-run
 npm test
-npm run build:demo
 npm run build:storybook
 npx tsc --noEmit
 ```
@@ -145,5 +144,5 @@ When porting new components from `guokaigdg/animal-island-ui`:
    Tests should FAIL at this stage.
 4. Implement the component using Tailwind CSS v4 + Radix UI, matching upstream
    visual and behavioral output.
-5. Verify: `npm run build && npm test && npm run build:demo && npx tsc --noEmit`.
+5. Verify: `npm run build && npm test && npx tsc --noEmit`.
 6. Create draft PR with upstream commit range in the description.

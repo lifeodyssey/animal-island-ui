@@ -1,0 +1,70 @@
+/* Keyframes at root scope — intentional. This library uses stable animal-*
+   class names rather than Tailwind animate-* utilities, so @keyframes do not
+   need to be inside @theme. Collapse keyframes remain in @layer components
+   where they are consumed. */
+@keyframes animal-btn-loading {
+  to { background-position: -28.28px 0; }
+}
+
+@keyframes animal-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes animal-checkbox-pop {
+  0% { opacity: 0; transform: scale(0.4); }
+  60% { transform: scale(1.2); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes animal-dropdown-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes animal-cursor-slide-in {
+  0% { opacity: 0; transform: translateY(-50%) translateX(-20px) rotate(-15deg); }
+  60% { opacity: 1; transform: translateY(-50%) translateX(5px) rotate(5deg); }
+  100% { opacity: 1; transform: translateY(-50%) translateX(0) rotate(0deg); }
+}
+
+@keyframes animal-leaf-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+}
+
+@keyframes animal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes animal-zoom-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes animal-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes animal-blink {
+  50% { opacity: 0; }
+}
+
+@keyframes animal-grasswave {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 0% 100%; }
+}
+
+@keyframes animal-icon-bounce {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.2) rotate(-5deg); }
+  100% { transform: scale(1.1) rotate(-4deg); }
+}
+
+@keyframes animal-icon-bounce-offset {
+  0% { transform: scale(1) rotate(0deg) translateY(15px); }
+  50% { transform: scale(1.2) rotate(-5deg) translateY(15px); }
+  100% { transform: scale(1.1) rotate(-4deg) translateY(15px); }
+}

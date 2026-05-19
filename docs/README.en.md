@@ -33,7 +33,7 @@ The visual design is inspired by [guokaigdg/animal-island-ui](https://github.com
 
 | Category | Technology |
 |----------|-----------|
-| Framework | React 19 + TypeScript |
+| Framework | React 18+ + TypeScript |
 | Styling | Tailwind CSS v4 + CSS custom properties |
 | Interaction | Radix UI primitives |
 | Build | Vite library mode (ESM + CJS) |
@@ -89,6 +89,7 @@ The style import is **required**. Without it, components render unstyled.
 | CJS | `dist/cjs/index.cjs` |
 | Types | `dist/types/index.d.ts` |
 | Style | `animal-island-ui-tailwind/style` |
+| Style (no fonts) | `animal-island-ui-tailwind/style/core` |
 | Assets | `dist/files` |
 
 ## Local Development
@@ -98,10 +99,8 @@ git clone https://github.com/lifeodyssey/animal-island-ui.git
 cd animal-island-ui
 npm install
 
-npm run dev              # Start demo dev server
 npm run storybook:test   # Start Storybook (port 6106)
 npm run build            # Build library
-npm run build:demo       # Build demo site
 npm run build:storybook  # Build static Storybook
 ```
 
@@ -154,6 +153,9 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md#design-tokens) for the full token list.
 | [PUBLISHING.md](../PUBLISHING.md) | npm publishing workflow |
 | [CHANGELOG.md](../CHANGELOG.md) | Version history |
 | [README.md](../README.md) | Chinese README |
+| [SECURITY.md](../SECURITY.md) | Security issue reporting |
+| [SUPPORT.md](../SUPPORT.md) | Support and issue submission |
+| [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md) | Community code of conduct |
 
 ## Credits
 

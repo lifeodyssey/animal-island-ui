@@ -1,0 +1,12 @@
+@layer theme, base, components, utilities;
+
+/* Only theme + utilities imported — preflight (base reset) is intentionally
+   omitted so the library does not reset consumer app styles. */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@import "./theme.css";
+@import "./tokens.css";
+@import "./base.css";
+@import "./components.css";
+@import "./keyframes.css";

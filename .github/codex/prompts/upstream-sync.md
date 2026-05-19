@@ -44,7 +44,6 @@ When upstream-only commits exist:
 npm run build
 npm pack --dry-run
 npm test
-npm run build:demo
 npm run build:storybook
 npx tsc --noEmit
 ```

@@ -33,7 +33,7 @@
 
 | 类别 | 技术 |
 |------|------|
-| 框架 | React 19 + TypeScript |
+| 框架 | React 18+ + TypeScript |
 | 样式 | Tailwind CSS v4 + CSS 自定义属性 |
 | 交互 | Radix UI primitives |
 | 构建 | Vite library mode (ESM + CJS) |
@@ -89,6 +89,7 @@ export function App() {
 | CJS | `dist/cjs/index.cjs` |
 | 类型 | `dist/types/index.d.ts` |
 | 样式 | `animal-island-ui-tailwind/style` |
+| 样式（无字体） | `animal-island-ui-tailwind/style/core` |
 | 资源 | `dist/files` |
 
 ## 本地开发
@@ -98,10 +99,8 @@ git clone https://github.com/lifeodyssey/animal-island-ui.git
 cd animal-island-ui
 npm install
 
-npm run dev              # 启动 Demo 开发服务器
 npm run storybook:test   # 启动 Storybook（端口 6106）
 npm run build            # 构建组件库
-npm run build:demo       # 构建 Demo 站点
 npm run build:storybook  # 构建 Storybook 静态站点
 ```
 
@@ -135,9 +134,9 @@ npm pack --dry-run       # 检查 npm 包内容
 
 ```css
 :root {
-    --animal-primary-color: #19c8b9;   /* 主色调 */
-    --animal-text-color: #794f27;      /* 文本色 */
-    --animal-bg-color: #f8f8f0;        /* 背景色 */
+    --animal-primary-color: #19c8b9;
+    --animal-text-color: #794f27;
+    --animal-bg-color: #f8f8f0;
 }
 ```
 
@@ -154,6 +153,9 @@ npm pack --dry-run       # 检查 npm 包内容
 | [PUBLISHING.md](./PUBLISHING.md) | npm 发布流程 |
 | [CHANGELOG.md](./CHANGELOG.md) | 版本变更记录 |
 | [docs/README.en.md](./docs/README.en.md) | English README |
+| [SECURITY.md](./SECURITY.md) | 安全问题报告 |
+| [SUPPORT.md](./SUPPORT.md) | 支持与问题提交 |
+| [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) | 社区协作准则 |
 
 ## 致谢
 

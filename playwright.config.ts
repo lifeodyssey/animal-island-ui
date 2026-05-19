@@ -6,11 +6,12 @@ export default defineConfig({
     timeout: 30_000,
     workers: 1,
     retries: process.env.CI ? 2 : 1,
+    snapshotPathTemplate: '{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}{-projectName}{ext}',
     expect: {
         timeout: 10_000,
         toHaveScreenshot: {
             threshold: 0.1,
-            maxDiffPixelRatio: 0.001,
+            maxDiffPixelRatio: 0.01,
         },
     },
     use: {

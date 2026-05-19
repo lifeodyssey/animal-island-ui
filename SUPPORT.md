@@ -11,5 +11,5 @@ repository.
 
 ## Upstream Project
 
-This fork modernizes the original `guokaigdg/animal-island-ui` project. For
-questions about the original Less implementation, use the upstream repository.
+This project was originally inspired by the `guokaigdg/animal-island-ui` project. For
+questions about the original Less implementation, see that repository.

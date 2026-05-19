@@ -26,10 +26,8 @@ git clone https://github.com/lifeodyssey/animal-island-ui.git
 cd animal-island-ui
 npm install
 
-npm run dev              # Demo 开发服务器
 npm run storybook:test   # Storybook 验收服务器（端口 6106）
 npm run build            # 构建组件库
-npm run build:demo       # 构建 Demo 站点
 npm test                 # 运行全部测试
 npm pack --dry-run       # 检查 npm 包内容
 ```
@@ -44,11 +42,10 @@ src/
       index.ts            # 导出入口
     ...
   styles/
-    tokens.css            # Tailwind v4 layers + --animal-* 设计令牌 + 组件样式
+    tokens/ directory with modular CSS files (theme, tokens, base, components, keyframes)
   utils/
-    cn.ts                 # classnames + tailwind-merge 合并工具
+    cn.ts                 # clsx + tailwind-merge 合并工具
   index.ts                # 库导出入口
-demo/                     # Demo 站点源码
 stories/                  # Storybook parity/matrix stories
 tests/                    # Playwright 交互测试与视觉回归截图
 ```
@@ -60,7 +57,7 @@ tests/                    # Playwright 交互测试与视觉回归截图
 3. 样式写入 `src/styles/tokens.css`，优先复用 `--animal-*` CSS 自定义属性
 4. 在 `src/index.ts` 中导出组件及类型
 5. 交互组件优先使用 Radix UI primitives
-6. 在 `demo/` 中添加组件演示，在 `stories/` 中添加 Storybook story
+6. 在 `stories/` 中添加 Storybook story
 7. 补 Playwright 交互测试和视觉回归截图
 
 ## 设计令牌
@@ -75,7 +72,7 @@ tests/                    # Playwright 交互测试与视觉回归截图
 | 圆角 | `--animal-radius-*` | `--animal-radius-base` (18px) |
 | 阴影 | `--animal-shadow-*` | `--animal-shadow-base` |
 | 动画 | `--animal-motion-*` | `--animal-motion-duration-base` (0.25s) |
-| 尺寸 | `--animal-height-*` | `--animal-height-base` (40px) |
+| 尺寸 | `--animal-height-*` | `--animal-height-base` (45px) |
 
 覆盖示例：
 
@@ -95,7 +92,6 @@ tests/                    # Playwright 交互测试与视觉回归截图
 npm run build
 npm pack --dry-run
 npm test
-npm run build:demo
 npm run build:storybook
 npx tsc --noEmit
 ```

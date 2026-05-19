@@ -1,13 +1,17 @@
-// Global Tailwind v4 token/style entry
-import './styles/tokens.css';
+// Global Tailwind v4 token/style entry (design tokens, base resets, component styles)
+import './styles/index.css';
 
+// Bundled @fontsource font-face declarations (Nunito, Noto Sans SC, Zen Maru Gothic).
+// Consumers who want to provide their own fonts can import
+// `animal-island-ui-tailwind/style/core` instead of the default
+// `animal-island-ui-tailwind/style` to skip these ~7.9 MB of font assets.
 
-// Nunito（latin subset only）
+// Nunito (latin subset only)
 import '@fontsource/nunito/latin-500.css';
 import '@fontsource/nunito/latin-700.css';
 import '@fontsource/nunito/latin-900.css';
 
-// Noto Sans SC（中文简体，圆润方正，兜底覆盖）
+// Noto Sans SC (Chinese Simplified — rounded CJK fallback)
 import '@fontsource/noto-sans-sc/latin-400.css';
 import '@fontsource/noto-sans-sc/latin-500.css';
 import '@fontsource/noto-sans-sc/latin-700.css';
@@ -15,7 +19,7 @@ import '@fontsource/noto-sans-sc/chinese-simplified-400.css';
 import '@fontsource/noto-sans-sc/chinese-simplified-500.css';
 import '@fontsource/noto-sans-sc/chinese-simplified-700.css';
 
-// Zen Maru Gothic（latin + japanese subset，japanese 覆盖假名 + JIS 汉字）
+// Zen Maru Gothic (latin + Japanese subset — kana + JIS kanji)
 import '@fontsource/zen-maru-gothic/latin-500.css';
 import '@fontsource/zen-maru-gothic/latin-700.css';
 import '@fontsource/zen-maru-gothic/latin-900.css';

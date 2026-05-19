@@ -28,7 +28,6 @@ Run these commands before publishing:
 npm run build
 npm pack --dry-run
 npm test
-npm run build:demo
 npm run build:storybook
 npx tsc --noEmit
 ```
@@ -71,7 +70,7 @@ snapshot regression remains part of local `npm test`; the hosted workflow runs
 Trigger it
 by either:
 
-- pushing a version tag such as `v0.8.0`
+- pushing a version tag such as `v0.9.0`
 - running the workflow manually from GitHub Actions
 
 Before triggering a release, confirm `package.json` has the intended version

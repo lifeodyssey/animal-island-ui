@@ -122,23 +122,23 @@ const SwitchSection = () => {
 
     return (
         <section data-testid="switch-parity-region" style={sectionStyle}>
-            <div style={labelStyle}>基础用法</div>
+            <div style={labelStyle}>basic usage</div>
             <div style={rowStyle}>
                 <Switch checked={checked} onChange={setChecked} />
                 <span data-testid="switch-state-label" style={{ fontSize: 13 }}>
                     {checked ? 'ON' : 'OFF'}
                 </span>
             </div>
-            <div style={labelStyle}>checkedChildren / unCheckedChildren 自定义文案</div>
+            <div style={labelStyle}>checkedChildren / unCheckedChildren custom labels</div>
             <div style={rowStyle}>
                 <Switch defaultChecked checkedChildren="开" unCheckedChildren="关" />
             </div>
-            <div style={labelStyle}>size 尺寸</div>
+            <div style={labelStyle}>size variants</div>
             <div style={rowStyle}>
                 <Switch defaultChecked />
                 <Switch size="small" defaultChecked />
             </div>
-            <div style={labelStyle}>disabled / loading 状态</div>
+            <div style={labelStyle}>disabled / loading states</div>
             <div style={rowStyle}>
                 <Switch disabled />
                 <Switch loading defaultChecked />
@@ -153,7 +153,7 @@ const CheckboxSection = () => {
 
     return (
         <section data-testid="checkbox-parity-region" style={sectionStyle}>
-            <div style={labelStyle}>默认水平排列（受控）</div>
+            <div style={labelStyle}>horizontal layout (controlled)</div>
             <div data-testid="checkbox-selected-label" style={{ fontSize: 13, color: '#a08060' }}>
                 已选中:{' '}
                 <span style={{ color: '#19c8b9', fontWeight: 600 }}>
@@ -165,23 +165,23 @@ const CheckboxSection = () => {
             <div style={boxStyle}>
                 <Checkbox options={islandOptions} value={selected} onChange={setSelected} style={{ gap: 20 }} />
             </div>
-            <div style={labelStyle}>垂直排列 + 含禁用选项</div>
+            <div style={labelStyle}>vertical layout + disabled option</div>
             <div style={boxStyle}>
                 <Checkbox options={critterOptions} value={vertical} onChange={setVertical} direction="vertical" style={{ gap: 12 }} />
             </div>
-            <div style={labelStyle}>小尺寸</div>
+            <div style={labelStyle}>small size</div>
             <div style={boxStyle}>
                 <Checkbox options={islandOptions} defaultValue={['forest']} size="small" />
             </div>
-            <div style={labelStyle}>中尺寸（默认）</div>
+            <div style={labelStyle}>middle size (default)</div>
             <div style={boxStyle}>
                 <Checkbox options={islandOptions} defaultValue={['beach']} size="middle" />
             </div>
-            <div style={labelStyle}>大尺寸</div>
+            <div style={labelStyle}>large size</div>
             <div style={boxStyle}>
                 <Checkbox options={islandOptions.slice(0, 3)} defaultValue={['beach']} size="large" />
             </div>
-            <div style={labelStyle}>全部禁用</div>
+            <div style={labelStyle}>all disabled</div>
             <div style={boxStyle}>
                 <Checkbox options={islandOptions} defaultValue={['garden', 'village']} disabled />
             </div>
@@ -197,19 +197,19 @@ const SelectSection = () => {
 
     return (
         <section data-testid="select-parity-region" style={sectionStyle}>
-            <div style={labelStyle}>默认状态</div>
+            <div style={labelStyle}>default state</div>
             <div style={{ marginBottom: 8, fontSize: 13, lineHeight: '18px', color: '#a08060' }}>
                 当前选中: <span style={{ color: '#19c8b9', fontWeight: 600 }}>{fishOptions.find((item) => item.key === fish)?.label}</span>
             </div>
             <div data-testid="select-default" style={boxStyle}>
                 <Select options={fishOptions} value={fish} onChange={setFish} />
             </div>
-            <div style={labelStyle}>自定义占位文本</div>
+            <div style={labelStyle}>custom placeholder</div>
             <div style={{ ...boxStyle, display: 'flex', gap: 16, alignItems: 'center', justifyContent: 'space-between', borderStyle: 'dashed' }}>
                 <Select options={flowerOptions} value={flower} onChange={setFlower} placeholder="请选择花朵" />
                 <Select options={fruitOptions} value={fruit} onChange={setFruit} placeholder="请选择水果" />
             </div>
-            <div style={labelStyle}>禁用状态</div>
+            <div style={labelStyle}>disabled state</div>
             <div style={boxStyle}>
                 <Select options={flowerOptions} value={disabledValue} onChange={setDisabledValue} disabled />
             </div>
@@ -223,7 +223,7 @@ const SelectEmptyKeySection = () => {
     return (
         <div style={pageStyle}>
             <section data-testid="select-empty-key-region" style={sectionStyle}>
-                <div style={labelStyle}>空字符串 key</div>
+                <div style={labelStyle}>empty string key</div>
                 <div data-testid="select-empty-key" style={boxStyle}>
                     <Select options={emptyKeyOptions} value={value} onChange={setValue} />
                 </div>
@@ -242,7 +242,7 @@ const SwitchStateMatrixSection = () => {
 
     return (
         <section data-testid="switch-state-matrix-region" style={sectionStyle}>
-            <div style={labelStyle}>Switch 状态矩阵</div>
+            <div style={labelStyle}>Switch state matrix</div>
             <div style={matrixGridStyle}>
                 <div style={matrixCardStyle}>
                     <span style={labelStyle}>controlled default</span>
@@ -290,7 +290,7 @@ const CheckboxStateMatrixSection = () => {
 
     return (
         <section data-testid="checkbox-state-matrix-region" style={sectionStyle}>
-            <div style={labelStyle}>Checkbox 尺寸 / 方向 / 禁用矩阵</div>
+            <div style={labelStyle}>Checkbox size / direction / disabled matrix</div>
             <div data-testid="checkbox-size-matrix" style={matrixGridStyle}>
                 <div data-testid="checkbox-size-small" style={matrixCardStyle}>
                     <span style={labelStyle}>small</span>
@@ -332,7 +332,7 @@ const SelectStateMatrixSection = () => {
 
     return (
         <section data-testid="select-state-matrix-region" style={sectionStyle}>
-            <div style={labelStyle}>Select placeholder / disabled / selected 矩阵</div>
+            <div style={labelStyle}>Select placeholder / disabled / selected matrix</div>
             <div style={matrixGridStyle}>
                 <div data-testid="select-placeholder-matrix" style={matrixCardStyle}>
                     <span style={labelStyle}>placeholder to selected</span>

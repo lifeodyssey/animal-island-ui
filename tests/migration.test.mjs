@@ -50,11 +50,10 @@ test('migration dependencies include Tailwind, Radix, Storybook, Playwright, and
 });
 
 test('runtime style entry is Tailwind CSS, not Less modules', () => {
+  assert.ok(existsSync(join(root, 'src/styles/index.css')), 'index.css should exist');
   assert.ok(existsSync(join(root, 'src/styles/tokens.css')), 'tokens.css should exist');
-  assert.match(read('src/index.ts'), /import ['"]\.\/styles\/tokens\.css['"]/);
+  assert.match(read('src/index.ts'), /import ['"]\.\/styles\/index\.css['"]/);
   assert.doesNotMatch(read('src/index.ts'), /\.less['"]/);
-  assert.match(read('demo/App.tsx'), /import ['"]\.\.\/src\/styles\/tokens\.css['"]/);
-  assert.doesNotMatch(read('demo/App.tsx'), /\.less['"]/);
 
   const runtimeFiles = walk('src', (rel) => /\.(ts|tsx)$/.test(rel));
   const lessImports = runtimeFiles.flatMap((rel) => {

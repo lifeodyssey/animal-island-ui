@@ -45,9 +45,6 @@ jobs:
       - name: Run tests
         run: npm run test:ci
 
-      - name: Build demo
-        run: npm run build:demo
-
       - name: Build Storybook
         run: npm run build:storybook
 

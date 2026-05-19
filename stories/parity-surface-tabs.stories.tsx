@@ -117,7 +117,7 @@ const TabsSection = () => {
 
     return (
         <section data-testid="tabs-parity-region" style={sectionStyle}>
-            <div style={labelStyle}>shadow 阴影控制</div>
+            <div style={labelStyle}>shadow control</div>
             <div style={rowStyle}>
                 <div style={boxStyle}>
                     <Tabs items={[{ key: 'a', label: '鱼类', children: <p>鲈鱼、鲷鱼...</p> }, { key: 'b', label: '昆虫', children: <p>蝴蝶、瓢虫...</p> }]} defaultActiveKey="a" />
@@ -126,18 +126,18 @@ const TabsSection = () => {
                     <Tabs items={[{ key: 'a', label: '鱼类', children: <p>鲈鱼、鲷鱼...</p> }, { key: 'b', label: '昆虫', children: <p>蝴蝶、瓢虫...</p> }]} defaultActiveKey="a" shadow={false} />
                 </div>
             </div>
-            <div style={labelStyle}>非受控模式</div>
+            <div style={labelStyle}>uncontrolled mode</div>
             <div data-testid="tabs-uncontrolled" style={boxStyle}>
                 <Tabs items={[{ key: 'a', label: '鱼类', children: <p>鲈鱼、鲷鱼、河童...</p> }, { key: 'b', label: '昆虫', children: <p>蝴蝶、瓢虫、蜻蜓...</p> }, { key: 'c', label: '海洋生物', children: <p>海星、珊瑚、小丑鱼...</p> }]} defaultActiveKey="a" />
             </div>
-            <div style={labelStyle}>受控模式</div>
+            <div style={labelStyle}>controlled mode</div>
             <div style={boxStyle}>
                 <Tabs items={items} activeKey={activeKey} onChange={setActiveKey} />
             </div>
             <div data-testid="tabs-selected-label" style={{ fontSize: 13, lineHeight: '18px', color: '#a08060' }}>
                 当前选中: <span style={{ color: '#19c8b9', fontWeight: 600 }}>{items.find((item) => item.key === activeKey)?.label}</span>
             </div>
-            <div style={labelStyle}>leafAnimation 叶子动画控制</div>
+            <div style={labelStyle}>leafAnimation control</div>
             <div style={rowStyle}>
                 <div style={boxStyle}>
                     <Tabs items={[{ key: 'a', label: '鱼类', children: <p>鲈鱼、鲷鱼...</p> }, { key: 'b', label: '昆虫', children: <p>蝴蝶、瓢虫...</p> }]} defaultActiveKey="a" leafAnimation />
@@ -181,7 +181,7 @@ const CardSection = () => (
                 <p>欢迎来到无人岛！虚线边框适合用于轻量提示或次要信息展示。</p>
             </Card>
         </div>
-        <div style={labelStyle}>color — NookPhone 颜色</div>
+        <div style={labelStyle}>color — NookPhone palette</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 16 }}>
             {cardColors.map(([color, en, cn]) => (
                 <Card key={color} color={color} style={{ padding: '16px 20px' }}>
@@ -210,16 +210,16 @@ const CardSection = () => (
 
 const CollapseSection = () => (
     <section data-testid="collapse-parity-region" style={sectionStyle}>
-        <div style={labelStyle}>基础用法</div>
+        <div style={labelStyle}>basic usage</div>
         <div style={{ maxWidth: 720 }}>
             <Collapse question="1個島嶼可以登錄多少名用戶?" answer={<p>1座島嶼最多可以容納8位居民（用戶）。</p>} />
             <Collapse question="可以多少人一起玩?" answer={<p>同住1個島的居民可以最多4人一起遊玩。透過通訊最多8人一起遊玩。</p>} />
         </div>
-        <div style={labelStyle}>defaultExpanded 默认展开</div>
+        <div style={labelStyle}>defaultExpanded</div>
         <div style={{ maxWidth: 720 }}>
             <Collapse question="这个问题默认展开" answer={<p>答案已经展示出来了！可以点击收起。</p>} defaultExpanded />
         </div>
-        <div style={labelStyle}>disabled 禁用状态</div>
+        <div style={labelStyle}>disabled state</div>
         <div style={{ maxWidth: 720 }}>
             <Collapse question="这个问题已被禁用（无法展开）" answer={<p>这段文字不应该被看到。</p>} disabled />
         </div>
@@ -234,13 +234,13 @@ const ModalSection = () => {
 
     return (
         <section data-testid="modal-parity-region" style={sectionStyle}>
-            <div style={labelStyle}>基础弹窗</div>
+            <div style={labelStyle}>basic modal</div>
             <div style={rowStyle}>
                 <Button type="primary" onClick={() => setModalOpen(true)}>基础 Modal</Button>
                 <Button onClick={() => setTitleModalOpen(true)}>带标题 Modal</Button>
                 <Button type="dashed" onClick={() => setCustomFooterOpen(true)}>自定义 Footer</Button>
             </div>
-            <div style={labelStyle}>关闭打字机效果</div>
+            <div style={labelStyle}>typewriter disabled</div>
             <div style={rowStyle}>
                 <Button type="primary" onClick={() => setNoTypewriterOpen(true)}>关闭打字机效果</Button>
             </div>

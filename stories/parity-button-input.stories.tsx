@@ -83,7 +83,7 @@ const buttonSizes = ['small', 'middle', 'large'] as const;
 const ButtonSection = () => (
     <section data-testid="button-parity-region" style={sectionStyle}>
         <h2 style={titleStyle}>Button</h2>
-        <div style={labelStyle}>type 按钮类型</div>
+        <div style={labelStyle}>type variants</div>
         <div style={rowStyle}>
             <Button type="primary">Primary</Button>
             <Button>Default</Button>
@@ -91,7 +91,7 @@ const ButtonSection = () => (
             <Button type="text">Text</Button>
             <Button type="link">Link</Button>
         </div>
-        <div style={labelStyle}>danger / ghost / loading / disabled 状态</div>
+        <div style={labelStyle}>danger / ghost / loading / disabled states</div>
         <div style={rowStyle}>
             <Button type="primary" danger>
                 Danger
@@ -106,7 +106,7 @@ const ButtonSection = () => (
                 Disabled
             </Button>
         </div>
-        <div style={labelStyle}>size 尺寸</div>
+        <div style={labelStyle}>size variants</div>
         <div style={rowStyle}>
             <Button type="primary" size="small">
                 Small
@@ -118,7 +118,7 @@ const ButtonSection = () => (
                 Large
             </Button>
         </div>
-        <div style={labelStyle}>icon 图标按钮</div>
+        <div style={labelStyle}>icon buttons</div>
         <div style={rowStyle}>
             <Button type="primary" icon={<span>🔍</span>}>
                 搜索
@@ -128,13 +128,13 @@ const ButtonSection = () => (
                 新增
             </Button>
         </div>
-        <div style={labelStyle}>block 块级按钮</div>
+        <div style={labelStyle}>block button</div>
         <div style={{ width: 360, maxWidth: '100%' }}>
             <Button type="primary" block>
                 Block Button
             </Button>
         </div>
-        <div style={labelStyle}>danger 组合</div>
+        <div style={labelStyle}>danger combinations</div>
         <div style={rowStyle}>
             <Button type="primary" danger>
                 Primary Danger
@@ -159,12 +159,12 @@ const InputSection = () => {
     return (
         <section data-testid="input-parity-region" style={sectionStyle}>
             <h2 style={titleStyle}>Input</h2>
-            <div style={labelStyle}>shadow 阴影控制</div>
+            <div style={labelStyle}>shadow control</div>
             <div style={inputStackStyle}>
                 <Input placeholder="No shadow (default)" />
                 <Input placeholder="With shadow" shadow />
             </div>
-            <div style={labelStyle}>基础用法</div>
+            <div style={labelStyle}>basic usage</div>
             <div style={inputStackStyle}>
                 <Input placeholder="Basic input" />
                 <Input
@@ -177,18 +177,18 @@ const InputSection = () => {
                 <Input placeholder="Clear empty" allowClear />
                 <Input placeholder="Prefix & Suffix" prefix="🔍" suffix="⏎" />
             </div>
-            <div style={labelStyle}>size 尺寸</div>
+            <div style={labelStyle}>size variants</div>
             <div style={inputStackStyle}>
                 <Input placeholder="Small" size="small" />
                 <Input placeholder="Middle (default)" size="middle" />
                 <Input placeholder="Large" size="large" />
             </div>
-            <div style={labelStyle}>status 校验状态</div>
+            <div style={labelStyle}>status validation</div>
             <div style={inputStackStyle}>
                 <Input placeholder="Error status" status="error" />
                 <Input placeholder="Warning status" status="warning" />
             </div>
-            <div style={labelStyle}>disabled 禁用</div>
+            <div style={labelStyle}>disabled state</div>
             <div style={inputStackStyle}>
                 <Input placeholder="Disabled" disabled defaultValue="Disabled" />
             </div>
@@ -202,7 +202,7 @@ const ButtonMatrixSection = () => {
     return (
         <section data-testid="button-matrix-region" style={sectionStyle}>
             <h2 style={titleStyle}>Button Matrix</h2>
-            <div style={labelStyle}>type × size 全组合</div>
+            <div style={labelStyle}>type x size combinations</div>
             <div data-testid="button-type-size-matrix" style={matrixGridStyle}>
                 {buttonSizes.flatMap((size) =>
                     buttonTypes.map((type) => (
@@ -212,7 +212,7 @@ const ButtonMatrixSection = () => {
                     )),
                 )}
             </div>
-            <div style={labelStyle}>状态组合</div>
+            <div style={labelStyle}>state combinations</div>
             <div data-testid="button-state-matrix" style={rowStyle}>
                 <Button type="primary" danger>
                     primary-danger
@@ -240,7 +240,7 @@ const ButtonMatrixSection = () => {
                     disabled-icon
                 </Button>
             </div>
-            <div style={labelStyle}>htmlType 原生按钮行为</div>
+            <div style={labelStyle}>htmlType native button behavior</div>
             <form
                 data-testid="button-htmltype-form"
                 style={formRowStyle}

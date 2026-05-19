@@ -22,8 +22,7 @@ animal-island-ui-tailwind 是 `animal-island-ui` 的 Tailwind CSS v4 + Radix UI 
 设计语言核心：**温暖大地色系 + 大圆角 pill 形 + 游戏按键立体感 + 柔和动效 + 有机不规则形状**。
 
 - 源码：`src/components/<ComponentName>/`
-- Demo 站：`demo/`
-- 构建：Vite (library mode) + `vite.config.ts`（库）/ `vite.config.demo.ts`（Demo）
+- 构建：Vite (library mode) + `vite.config.ts`
 - 样式系统：Tailwind CSS v4 layers + `src/styles/tokens.css`，通过稳定 `animal-*` 类名与 `--animal-*` CSS custom properties 复刻原样式
 - npm 入口：`animal-island-ui-tailwind`；样式入口：`animal-island-ui-tailwind/style`
 
@@ -1054,21 +1053,9 @@ Props：
 
 ---
 
-## 3. Demo 布局精确规范
+## 3. Storybook 布局参考
 
-这是 Demo 站（`demo/App.tsx`）的实际布局数值，用于还原完整页面效果：
-
-### 整体布局
-
-```css
-/* 页面背景 */
-/* 首页 */ background: url(home_bg.svg) center/cover no-repeat, #7DC395;
-/* 组件页 */ background: url(content_bg_pc.jpg) center fixed;
-
-/* Sidebar */
-width: 220px; min-width: 220px;
-background: url(menu_bg.svg) center/cover no-repeat;
-```
+组件文档使用 Storybook 展示。以下是原始 Demo 站的布局数值，供在 Storybook stories 中还原视觉效果时参考：
 
 ### Sidebar 精确值
 
@@ -1378,58 +1365,7 @@ MyComponent.displayName = 'MyComponent'
 
 ---
 
-## 8. Demo 页面规范
-
-每个组件在 `demo/components/<ComponentName>/index.tsx` 创建演示页：
-
-```tsx
-import { CodeBlock, ApiTable } from '../../tools'
-
-const props = [
-  { name: 'size', type: "'small' | 'middle' | 'large'", default: "'middle'", description: '尺寸' },
-]
-
-export default function MyComponentDemo() {
-  return (
-    <div>
-      <h2>MyComponent</h2>
-      <CodeBlock code={`<MyComponent size="large">内容</MyComponent>`} />
-      <ApiTable data={props} />
-    </div>
-  )
-}
-```
-
-并在 `demo/ComponentPage.tsx` 中注册路由，同时把 `title / desc` 写入 `demo/pageInfo.ts`：
-
-```ts
-// demo/pageInfo.ts — 供 App 静态导入的轻量元信息
-export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
-  button:         { title: 'Button 按钮',       desc: '...' },
-  input:          { title: 'Input 输入框',      desc: '...' },
-  switch:         { title: 'Switch 开关',       desc: '...' },
-  card:           { title: 'Card 卡片',         desc: '...' },
-  collapse:       { title: 'Collapse 折叠面板', desc: '...' },
-  cursor:         { title: 'Cursor 光标',       desc: '...' },
-  time:           { title: 'Time 时间',         desc: '...' },
-  phone:          { title: 'Phone 手机',        desc: '...' },
-  footer:         { title: 'Footer 底部装饰',   desc: '...' },
-  modal:          { title: 'Modal 弹窗',        desc: '...' },
-  typewriter:     { title: 'Typewriter 打字机', desc: '...' },
-  'divider-comp': { title: 'Divider 分割线',    desc: '...' },
-  icon:           { title: 'Icon 图标',         desc: '...' },
-  select:         { title: 'Select 选择器',     desc: '...' },
-  checkbox:       { title: 'Checkbox 多选框',   desc: '...' },
-  codeblock:      { title: 'CodeBlock 代码高亮', desc: '...' },
-  loading:        { title: 'Loading 加载',       desc: '...' },
-}
-```
-
-新增组件务必追加对应条目，否则 Demo 侧栏不会展示。
-
----
-
-## 9. 新增组件 Checklist
+## 8. 新增组件 Checklist
 
 - [ ] Google Fonts 已在 `index.html` 或样式入口引入（Nunito + Noto Sans SC + Zen Maru Gothic）
 - [ ] Props interface 从组件文件导出
@@ -1443,8 +1379,5 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
 - [ ] 焦点：输入类用 `#ffcc00`，按钮类用 `#19c8b9`
 - [ ] 动画使用 `--animal-motion-duration-*` 和 `--animal-motion-ease` token
 - [ ] 组件从 `src/index.ts` 导出
-- [ ] Demo 页创建于 `demo/components/`
-- [ ] Demo 在 `demo/ComponentPage.tsx` 中注册
-- [ ] `demo/pageInfo.ts` 追加 `{ title, desc }` 元信息
 - [ ] Storybook parity/matrix story 已覆盖主要变体和状态
 - [ ] Playwright 交互测试和必要的 `toHaveScreenshot()` 局部视觉基线已补齐
