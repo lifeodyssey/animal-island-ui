@@ -55,14 +55,4 @@ jobs:
         run: npm pack --dry-run
 
       - name: Publish package
-        shell: bash
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          if [ -n "${NODE_AUTH_TOKEN}" ]; then
-            echo "Publishing with NPM_TOKEN and provenance."
-            npm publish --access public --provenance
-          else
-            echo "Publishing with npm trusted publishing (OIDC)."
-            npm publish --access public
-          fi
+        run: npm publish --access public

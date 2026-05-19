@@ -132,13 +132,11 @@ The repository includes two GitHub Actions workflows:
   Visual screenshot regression stays in local `npm test` so Linux runners do not
   block releases when platform snapshots are absent.
 - `Release`: runs the same verification when a `v*.*.*` tag is pushed or the
-  workflow is triggered manually. The first publish can use an `NPM_TOKEN` with
-  bypass 2FA, and later releases can use npm trusted publishing / GitHub OIDC
-  without a long-lived token.
+  workflow is triggered manually. It publishes through npm Trusted Publishing /
+  GitHub Actions OIDC without a long-lived npm token.
 
-Before the first automated release, add an npm granular token as the GitHub
-repository secret `NPM_TOKEN`. After the package exists, configure npm trusted
-publishing and remove the long-lived token if desired. See [`PUBLISHING.md`](../PUBLISHING.md) for the publishing flow.
+The npm package already has a Trusted Publisher configured for
+`lifeodyssey/animal-island-ui` and the `release.yml` workflow. See [`PUBLISHING.md`](../PUBLISHING.md) for the publishing flow.
 
 ## Local Development
 

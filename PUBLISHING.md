@@ -33,7 +33,7 @@ npm run build:storybook
 npx tsc --noEmit
 ```
 
-## First-Time npm Setup
+## npm Trusted Publishing Setup
 
 Log in locally if publishing by hand:
 
@@ -42,16 +42,17 @@ npm login
 npm whoami
 ```
 
-All new npm packages require either 2FA or a granular access token with
-`Bypass 2FA` enabled. For the first CI publish of this new package, create a
-granular npm token with:
+The npm package is configured to publish through GitHub Actions OIDC trusted
+publishing:
 
-- read and write access
-- access to all packages, or at least permission to create/publish this package
-- `Bypass 2FA` enabled
-- a short expiration date
+- Package: `animal-island-ui-tailwind`
+- Publisher: GitHub Actions
+- Repository: `lifeodyssey/animal-island-ui`
+- Workflow file: `release.yml`
 
-Add it to the GitHub repository as the secret `NPM_TOKEN`.
+The package publishing access is set to "Require two-factor authentication and
+disallow tokens". Trusted publishers continue to work with this setting, while
+long-lived npm tokens cannot publish the package.
 
 ## Manual Publish
 
@@ -59,9 +60,8 @@ Add it to the GitHub repository as the secret `NPM_TOKEN`.
 npm publish --access public
 ```
 
-Local publishing still requires an interactive 2FA method or a bypass-2FA
-token. Provenance is generated from supported CI providers, not from a normal
-local shell.
+Local publishing still requires an interactive 2FA method. Provenance is
+generated from supported CI providers, not from a normal local shell.
 
 ## GitHub Actions Publish
 
@@ -77,18 +77,11 @@ by either:
 Before triggering a release, confirm `package.json` has the intended version
 and that `CHANGELOG.md` contains the release notes.
 
-The workflow supports two npm authentication modes:
+The workflow publishes with npm trusted publishing through GitHub Actions OIDC:
 
-- If `NPM_TOKEN` is present, it publishes with `npm publish --access public --provenance`.
-- If `NPM_TOKEN` is absent, it attempts npm trusted publishing through GitHub
-  Actions OIDC and runs `npm publish --access public`.
+```bash
+npm publish --access public
+```
 
-For trusted publishing after the first package version exists, configure npm:
-
-1. Open the `animal-island-ui-tailwind` package on npmjs.com.
-2. Go to Settings -> Trusted publishing.
-3. Select GitHub Actions.
-4. Set Organization or user to `lifeodyssey`.
-5. Set Repository to `animal-island-ui`.
-6. Set Workflow filename to `release.yml`.
-7. Save, then remove the `NPM_TOKEN` secret if you want token-free publishing.
+Do not pass `--provenance` here; npm generates provenance automatically for
+trusted publishing.
