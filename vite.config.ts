@@ -5,6 +5,8 @@ import libAssetsPlugin from '@laynezh/vite-plugin-lib-assets';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /**
@@ -49,6 +51,7 @@ export default defineConfig({
             name: '[name].[contenthash:8].[ext]',
             limit: 0,
         }),
+        cloudflare()
     ],
     resolve: {
         alias: {
