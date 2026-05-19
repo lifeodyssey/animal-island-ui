@@ -79,6 +79,11 @@
     --animal-height-sm: 32px;
     --animal-height-base: 40px;
     --animal-height-lg: 48px;
+    --animal-table-stripe-bg: rgba(248, 248, 240, 0.6);
+    --animal-table-hover-stripe-start: rgba(25, 200, 185, 0.62);
+    --animal-table-hover-stripe-end: rgba(14, 196, 182, 0.62);
+    --animal-table-hover-text: var(--animal-text-color);
+    --animal-table-overlay-bg: rgba(247, 243, 223, 0.8);
   }
 
   /* Keep styles isolated: do not globally reset the consumer app. */
@@ -1510,7 +1515,7 @@
   }
 
   .animal-table-row-striped {
-    background: rgba(248, 248, 240, 0.6);
+    background: var(--animal-table-stripe-bg);
   }
 
   .animal-table-row:hover,
@@ -1518,10 +1523,10 @@
     transform: scale(1.01);
     background-image: repeating-linear-gradient(
       -45deg,
-      rgba(25, 200, 185, 0.62),
-      rgba(25, 200, 185, 0.62) 10px,
-      rgba(14, 196, 182, 0.62) 10px,
-      rgba(14, 196, 182, 0.62) 20px
+      var(--animal-table-hover-stripe-start),
+      var(--animal-table-hover-stripe-start) 10px,
+      var(--animal-table-hover-stripe-end) 10px,
+      var(--animal-table-hover-stripe-end) 20px
     );
     background-size: 28.28px 28.28px;
     clip-path: inset(0 0 0 0 round 30px);
@@ -1534,7 +1539,7 @@
 
   .animal-table-row:hover .animal-table-cell,
   .animal-table-row-striped:hover .animal-table-cell {
-    color: #3d2e1e;
+    color: var(--animal-table-hover-text);
   }
 
   .animal-table-cell {
@@ -1577,14 +1582,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(247, 243, 223, 0.8);
+    background: var(--animal-table-overlay-bg);
     backdrop-filter: blur(2px);
     border-radius: inherit;
   }
 
   .animal-table-loading-spinner {
     color: var(--animal-primary-color);
-    animation: animal-spin 1s linear infinite;
+    animation: animal-spin 0.6s linear infinite;
   }
 
   .animal-table-loading-spinner svg {

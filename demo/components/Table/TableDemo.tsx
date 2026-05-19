@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Table, Button } from '../../../src';
 import type { TableColumn } from '../../../src';
 import {
@@ -84,10 +84,13 @@ const dataSource: TableRow[] = [
 const TableDemo: React.FC = () => {
     const [striped, setStriped] = useState(true);
     const [loading, setLoading] = useState(false);
+    const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
+
+    useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
     const handleLoading = () => {
         setLoading(true);
-        window.setTimeout(() => setLoading(false), 2000);
+        timerRef.current = setTimeout(() => setLoading(false), 2000);
     };
 
     return (

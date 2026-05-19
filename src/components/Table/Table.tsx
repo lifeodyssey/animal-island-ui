@@ -102,7 +102,7 @@ const TableInner = <T extends TableRecord>(
             style={wrapperStyle}
             {...rest}
         >
-            <table className={cn('animal-table', loading && 'animal-table-loading')} style={tableStyle}>
+            <table className={cn('animal-table', loading && 'animal-table-loading')} style={tableStyle} aria-busy={loading || undefined}>
                 {showHeader && (
                     <thead className="animal-table-head">
                         <tr className="animal-table-head-row">
