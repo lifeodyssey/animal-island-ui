@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 /**
@@ -9,7 +9,7 @@ import { twMerge } from 'tailwind-merge';
  * internal utilities. `tailwind-merge` removes conflicting utilities so the
  * consumer-provided intent wins.
  */
-export function cn(...inputs: Parameters<typeof classNames>): string {
-    return twMerge(classNames(...inputs));
+export function cn(...inputs: ClassValue[]): string {
+    return twMerge(clsx(inputs));
 }
 

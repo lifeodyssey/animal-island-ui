@@ -1,7 +1,7 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 
 const storyUrl = '/iframe.html?id=regression-parity-controls--controls-playwright-parity&viewMode=story';
-const matrixStoryUrl = '/iframe.html?id=regression-parity-controls--controls-state-matrix-parity&viewMode=story';
+const matrixStoryUrl = '/iframe.html?id=regression-parity-controls--controls-state-matrix-stable&viewMode=story';
 const placementStoryUrl = '/iframe.html?id=regression-parity-controls--select-placement-parity&viewMode=story';
 const emptyKeyStoryUrl = '/iframe.html?id=regression-parity-controls--select-empty-key-playwright-parity&viewMode=story';
 
@@ -168,7 +168,7 @@ test.describe('reference controls parity', () => {
         await page.goto(matrixStoryUrl);
         await expect(page.getByTestId('select-state-matrix-region')).toBeVisible();
 
-        await expect(page.getByTestId('select-placeholder-state')).toHaveText('夏葵');
+        await expect(page.getByTestId('select-placeholder-state')).toHaveText('empty');
         await page.getByTestId('select-selected-matrix').getByText('秋菊').first().click();
         await expect(page.getByText('春樱').last()).toBeVisible();
         // Prefer Escape over click-away: Radix Select temporarily disables outside pointer events.

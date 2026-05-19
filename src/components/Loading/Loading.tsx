@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { cn } from '../../utils/cn';
-import gsapScript from './island/gsap.min.js?raw';
-import motionPathPlugin from './island/MotionPathPlugin.min.js?raw';
-import animationScript from './island/script.js?raw';
+
+gsap.registerPlugin(MotionPathPlugin);
 
 export interface LoadingProps {
     className?: string;
@@ -82,26 +83,173 @@ const SVG_CONTENT = `<svg viewBox="0 0 446 540" xmlns="http://www.w3.org/2000/sv
 export function Loading({ className, style, active = true }: LoadingProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const preContainerRef = useRef<HTMLDivElement>(null);
+    const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         if (!containerRef.current) return;
 
-        const script1 = document.createElement('script');
-        script1.textContent = gsapScript;
-        containerRef.current.appendChild(script1);
+        const ctx = gsap.context(() => {
+            // Island bobbing
+            gsap.to('#whole-island', {
+                transformOrigin: 'bottom center',
+                y: -15,
+                rotation: 1,
+                duration: 1,
+                ease: 'sine.inOut',
+                yoyo: true,
+                repeat: -1,
+            });
 
-        const script2 = document.createElement('script');
-        script2.textContent = motionPathPlugin;
-        containerRef.current.appendChild(script2);
+            // Tree swaying
+            gsap.fromTo(
+                '#tree',
+                { transformOrigin: 'bottom center', rotation: -6 },
+                {
+                    transformOrigin: 'bottom center',
+                    rotation: 5,
+                    duration: 2,
+                    ease: 'sine.inOut',
+                    yoyo: true,
+                    repeat: -1,
+                },
+            );
 
-        const script3 = document.createElement('script');
-        script3.textContent = animationScript;
-        containerRef.current.appendChild(script3);
+            // Leaf animations
+            gsap.to('#leaf1', {
+                transformOrigin: 'center right',
+                y: -3,
+                duration: 1,
+                ease: 'sine.inOut',
+                yoyo: true,
+                repeat: -1,
+            });
+
+            gsap.fromTo(
+                '#leaf2',
+                { transformOrigin: 'bottom right', rotation: 3 },
+                {
+                    transformOrigin: 'bottom right',
+                    rotation: -4,
+                    x: -3,
+                    y: -3,
+                    duration: 1,
+                    ease: 'sine.inOut',
+                    yoyo: true,
+                    repeat: -1,
+                },
+            );
+
+            gsap.to('#leaf3', {
+                transformOrigin: 'bottom center',
+                rotation: -6,
+                duration: 1,
+                ease: 'sine.inOut',
+                yoyo: true,
+                repeat: -1,
+            });
+
+            gsap.to('#leaf4', {
+                transformOrigin: 'bottom left',
+                rotation: -6,
+                y: -3,
+                duration: 1,
+                ease: 'sine.inOut',
+                yoyo: true,
+                repeat: -1,
+            });
+
+            gsap.to('#leaf5', {
+                transformOrigin: 'top left',
+                y: -3,
+                duration: 1,
+                ease: 'sine.inOut',
+                yoyo: true,
+                repeat: -1,
+            });
+
+            // Water circle animations
+            gsap.to('#water-circle1', {
+                transformOrigin: 'center center',
+                scaleX: 1.2,
+                duration: 1,
+                ease: 'sine.inOut',
+                yoyo: true,
+                repeat: -1,
+            });
+
+            gsap.to('#water-circle2', {
+                transformOrigin: 'center center',
+                scaleX: 0.8,
+                duration: 1,
+                ease: 'sine.inOut',
+                yoyo: true,
+                repeat: -1,
+                delay: -0.5,
+            });
+
+            // Triangle wave animations
+            gsap.fromTo('#tri-wave1', { x: -60 }, { x: 20, duration: 6, repeat: -1, ease: 'none' });
+
+            gsap.fromTo('#tri-wave2', { x: -10 }, { x: 50, duration: 6, repeat: -1, ease: 'none' });
+
+            gsap.fromTo(
+                '#tri-wave1>path, #tri-wave2>path',
+                { scaleY: 0 },
+                {
+                    scaleY: 1,
+                    duration: 1,
+                    repeat: -1,
+                    yoyo: true,
+                    transformOrigin: 'bottom center',
+                },
+            );
+
+            // Sine wave animations
+            gsap.fromTo(
+                '#sine-wave-group *',
+                { x: 0 },
+                { x: 75, repeat: -1, duration: 2, ease: 'none' },
+            );
+
+            gsap.fromTo(
+                '#sine-wave-group *',
+                { scaleY: 0.8, transformOrigin: 'bottom center' },
+                {
+                    scaleY: 1.2,
+                    transformOrigin: 'bottom center',
+                    repeat: -1,
+                    duration: 1,
+                    yoyo: true,
+                    ease: 'sine.inOut',
+                },
+            );
+
+            // Fish motion path animation
+            gsap.set('#fish-path', {
+                scaleY: 1.3,
+                scaleX: 1.3,
+                transformOrigin: 'bottom left',
+            });
+
+            gsap.to('#fish', {
+                duration: 3,
+                repeat: -1,
+                repeatDelay: 4,
+                ease: 'slow(0.3, 0.7, false)',
+                immediateRender: true,
+                motionPath: {
+                    path: '#fish-path',
+                    align: '#fish-path',
+                    alignOrigin: [0.5, 0.5],
+                    autoRotate: true,
+                    start: 0,
+                    end: 1,
+                },
+            });
+        }, containerRef);
 
         return () => {
-            script1.remove();
-            script2.remove();
-            script3.remove();
+            ctx.revert();
         };
     }, []);
 
@@ -110,9 +258,14 @@ export function Loading({ className, style, active = true }: LoadingProps) {
 
         const container = containerRef.current;
         const rect = container.getBoundingClientRect();
-        // 终态半径需完全覆盖对角线（从中心到最远角），再加余量防止四角残留
         const finalR = Math.ceil(Math.hypot(rect.width, rect.height) / 2) + 50;
         const duration = Math.max(0.1, finalR / 1500);
+
+        // Clear any pending hide timer before processing the new state
+        if (hideTimerRef.current !== null) {
+            clearTimeout(hideTimerRef.current);
+            hideTimerRef.current = null;
+        }
 
         if (active) {
             container.classList.remove('animal-loading-closing');
@@ -123,16 +276,24 @@ export function Loading({ className, style, active = true }: LoadingProps) {
             container.classList.add('animal-loading-closing');
             container.style.transition = '';
             container.style.setProperty('--mask-r', '0px');
-            // 强制 reflow 让初始值生效
+            // Force reflow so the initial value takes effect
             void container.offsetHeight;
             container.style.transition = `--mask-r ${duration}s linear`;
             container.style.setProperty('--mask-r', `${finalR}px`);
-            setTimeout(() => {
+            hideTimerRef.current = setTimeout(() => {
+                hideTimerRef.current = null;
                 if (containerRef.current) {
                     containerRef.current.style.display = 'none';
                 }
             }, duration * 1000);
         }
+
+        return () => {
+            if (hideTimerRef.current !== null) {
+                clearTimeout(hideTimerRef.current);
+                hideTimerRef.current = null;
+            }
+        };
     }, [active]);
 
     return (

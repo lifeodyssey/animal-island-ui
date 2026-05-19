@@ -89,6 +89,10 @@ export function Typewriter({
     const total = useMemo(() => countText(children), [children]);
     const [count, setCount] = useState(autoPlay ? 0 : total);
     const timerRef = useRef<number | null>(null);
+    const onDoneRef = useRef(onDone);
+    useEffect(() => {
+        onDoneRef.current = onDone;
+    }, [onDone]);
 
     useEffect(() => {
         if (timerRef.current) window.clearInterval(timerRef.current);
@@ -113,8 +117,7 @@ export function Typewriter({
     }, [total, speed, trigger, autoPlay]);
 
     useEffect(() => {
-        if (total > 0 && count >= total) onDone?.();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (total > 0 && count >= total) onDoneRef.current?.();
     }, [count, total]);
 
     const state: RenderState = { remaining: count, stopped: false };

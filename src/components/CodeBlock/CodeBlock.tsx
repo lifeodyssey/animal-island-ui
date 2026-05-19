@@ -77,16 +77,19 @@ export interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {
 }
 
 export const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
-    ({ code, style, className, ...rest }, ref) => (
-        <pre
-            ref={ref}
-            style={style}
-            className={cn('animal-code-block', className)}
-            {...rest}
-        >
-            {highlightJSX(code)}
-        </pre>
-    )
+    ({ code, style, className, ...rest }, ref) => {
+        const highlighted = React.useMemo(() => highlightJSX(code), [code]);
+        return (
+            <pre
+                ref={ref}
+                style={style}
+                className={cn('animal-code-block', className)}
+                {...rest}
+            >
+                {highlighted}
+            </pre>
+        );
+    }
 );
 
 CodeBlock.displayName = 'CodeBlock';

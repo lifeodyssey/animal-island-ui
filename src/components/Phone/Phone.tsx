@@ -12,6 +12,8 @@ interface App {
     iconWidth?: number;
 }
 
+// App icon colors match the upstream NookPhone palette — kept as inline
+// styles to preserve 1:1 visual parity with the original implementation.
 const apps: App[] = [
     { id: 'camera', iconClass: 'animal-icon-camera', color: '#B77DEE', hasNewMessage: true },
     { id: 'app', iconClass: 'animal-icon-miles', color: '#889DF0', offset: true },

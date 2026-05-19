@@ -85,9 +85,9 @@ test.describe('reference surface parity', () => {
         await expect(page.getByRole('dialog')).toHaveCount(0);
 
         await page.getByRole('button', { name: '带标题 Modal' }).click();
-        await expect(page.getByText('博物馆捐赠')).toBeVisible();
+        await expect(page.getByRole('heading', { name: '博物馆捐赠' })).toBeVisible();
         await page.keyboard.press('Escape');
-        await expect(page.getByText('博物馆捐赠')).toHaveCount(0);
+        await expect(page.getByRole('dialog')).toHaveCount(0);
 
         await page.getByRole('button', { name: '自定义 Footer' }).click();
         await expect(page.getByText('确认搬家')).toBeVisible();
@@ -95,12 +95,12 @@ test.describe('reference surface parity', () => {
         await expect(page.getByText('确认搬家')).toHaveCount(0);
 
         await page.getByRole('button', { name: '关闭打字机效果' }).click();
-        await expect(page.getByText('天气预报')).toBeVisible();
+        await expect(page.getByRole('heading', { name: '天气预报' })).toBeVisible();
         await expect(page.getByText('明天天气晴朗')).toBeVisible();
         await expect(page.locator('[class*="mask"], [class*="overlay"]').first()).toHaveCSS('background-color', 'rgba(0, 0, 0, 0.35)');
         // Exercise the default footer close path using the stable no-typewriter modal.
         await page.getByRole('button', { name: '确定' }).click();
-        await expect(page.getByText('天气预报')).toHaveCount(0);
+        await expect(page.getByRole('dialog')).toHaveCount(0);
     });
 
     test('covers Card, rich Collapse, and Modal edge props', async ({ page }) => {

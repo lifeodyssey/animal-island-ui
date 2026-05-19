@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react';
 import type { CSSProperties } from 'react';
 import { useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
@@ -189,13 +189,19 @@ export const AssetsParity: Story = {
         </div>
     ),
     play: async ({ canvas }) => {
-        await expect(canvas.getByTestId('divider-matrix').querySelectorAll('div[class*="divider"]').length).toBeGreaterThanOrEqual(6);
-        await expect(canvas.getByTestId('footer-matrix').querySelectorAll('div[class*="footer"]').length).toBeGreaterThanOrEqual(2);
+        await waitFor(() => {
+            expect(canvas.getByTestId('divider-matrix').querySelectorAll('div[class*="divider"]').length).toBeGreaterThanOrEqual(6);
+        });
+        await waitFor(() => {
+            expect(canvas.getByTestId('footer-matrix').querySelectorAll('div[class*="footer"]').length).toBeGreaterThanOrEqual(2);
+        });
         for (const icon of ICON_LIST) {
             await expect(canvas.getByText(icon.label)).toBeVisible();
         }
-        const icons = canvas.getByTestId('icon-grid').querySelectorAll('span[class*="icon"]');
-        await expect(icons.length).toBe(ICON_LIST.length);
+        await waitFor(() => {
+            const icons = canvas.getByTestId('icon-grid').querySelectorAll('span[class*="icon"]');
+            expect(icons.length).toBe(ICON_LIST.length);
+        });
     },
 };
 

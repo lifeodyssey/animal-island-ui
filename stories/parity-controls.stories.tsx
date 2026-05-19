@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react';
 import type { CSSProperties } from 'react';
 import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
@@ -423,12 +423,16 @@ export const SelectEmptyKeyParity: Story = {
         const canvas = within(canvasElement);
         const selectBox = canvas.getByTestId('select-empty-key');
         await expect(canvas.getByTestId('select-empty-key-label')).toHaveTextContent('空键选项');
-        await userEvent.click(within(selectBox).getAllByText('空键选项')[0].closest('button, div') as HTMLElement);
+        const trigger1 = within(selectBox).getAllByText('空键选项')[0].closest('button, div');
+        if (!trigger1) throw new Error('Select trigger element not found');
+        await userEvent.click(trigger1);
 
         const body = within(document.body);
         await userEvent.click(await body.findByText('普通选项'));
         await expect(canvas.getByTestId('select-empty-key-label')).toHaveTextContent('普通选项');
-        await userEvent.click(within(selectBox).getAllByText('普通选项')[0].closest('button, div') as HTMLElement);
+        const trigger2 = within(selectBox).getAllByText('普通选项')[0].closest('button, div');
+        if (!trigger2) throw new Error('Select trigger element not found');
+        await userEvent.click(trigger2);
         const emptyOptions = await body.findAllByText('空键选项');
         await userEvent.click(emptyOptions[emptyOptions.length - 1]);
         await expect(canvas.getByTestId('select-empty-key-label')).toHaveTextContent('空键选项');
@@ -474,16 +478,26 @@ export const ControlsStateMatrixParity: Story = {
         await expect(canvas.getByTestId('checkbox-numeric-state')).toHaveTextContent('101');
 
         await expect(canvas.getByTestId('select-placeholder-state')).toHaveTextContent('empty');
-        await userEvent.click(
-            within(canvas.getByTestId('select-placeholder-matrix')).getByText('请选择季节花').closest('button, div') as HTMLElement,
-        );
+        const placeholderTrigger = within(canvas.getByTestId('select-placeholder-matrix')).getByText('请选择季节花').closest('button, div');
+        if (!placeholderTrigger) throw new Error('Select trigger element not found');
+        await userEvent.click(placeholderTrigger);
         await userEvent.click(await body.findByText('夏葵'));
         await expect(canvas.getByTestId('select-placeholder-state')).toHaveTextContent('夏葵');
-        await userEvent.click(
-            within(canvas.getByTestId('select-disabled-matrix')).getByText('冬莓').closest('button, div') as HTMLElement,
-        );
+        const disabledTrigger = within(canvas.getByTestId('select-disabled-matrix')).getByText('冬莓').closest('button, div');
+        if (!disabledTrigger) throw new Error('Select trigger element not found');
+        await userEvent.click(disabledTrigger);
         await expect(body.queryByText('春樱')).not.toBeInTheDocument();
     },
+};
+
+export const ControlsStateMatrixStable: Story = {
+    render: () => (
+        <div style={pageStyle}>
+            <SwitchStateMatrixSection />
+            <CheckboxStateMatrixSection />
+            <SelectStateMatrixSection />
+        </div>
+    ),
 };
 
 export const SelectPlacementParity: Story = {

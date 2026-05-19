@@ -18,20 +18,17 @@ export interface SelectProps extends Omit<
     disabled?: boolean;
 }
 
-const RADIX_VALUE_PREFIX = 'animal-option-';
+const EMPTY_KEY_PREFIX = '__animal_empty_';
 
-const toRadixValue = (index: number) => `${RADIX_VALUE_PREFIX}${index}`;
+function toRadixValue(key: string): string {
+    return key === '' ? `${EMPTY_KEY_PREFIX}0` : key;
+}
 
-const parseRadixValue = (nextValue: string) => {
-    // Guard against Radix's "empty string means cleared" behavior and any unexpected values.
-    // Crucially, avoid Number('') => 0 which would incorrectly map to the first option.
-    if (!nextValue.startsWith(RADIX_VALUE_PREFIX)) return null;
-    const rawIndex = nextValue.slice(RADIX_VALUE_PREFIX.length);
-    if (rawIndex.length === 0) return null;
-    const optionIndex = Number(rawIndex);
-    if (!Number.isInteger(optionIndex) || optionIndex < 0) return null;
-    return optionIndex;
-};
+function fromRadixValue(radixVal: string, options: SelectOption[]): string | undefined {
+    if (radixVal.startsWith(EMPTY_KEY_PREFIX)) return '';
+    const opt = options.find((o) => o.key === radixVal);
+    return opt ? opt.key : undefined;
+}
 
 export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
     (
@@ -46,19 +43,15 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         },
         ref,
     ) => {
-        const selectedIndex = options.findIndex((option) => option.key === value);
-        const selectedOption = selectedIndex >= 0 ? options[selectedIndex] : undefined;
-        const radixValue = selectedIndex >= 0 ? toRadixValue(selectedIndex) : undefined;
+        const selectedOption = options.find((option) => option.key === value);
+        const radixValue = selectedOption ? toRadixValue(value) : '';
 
         return (
             <RadixSelect.Root
-                value={radixValue ?? ''}
+                value={radixValue}
                 onValueChange={(nextValue) => {
-                    const optionIndex = parseRadixValue(nextValue);
-                    if (optionIndex === null) return;
-                    const option = options[optionIndex];
-                    if (!option) return;
-                    onChange(option.key);
+                    const key = fromRadixValue(nextValue, options);
+                    if (key !== undefined) onChange(key);
                 }}
                 disabled={disabled}
             >
@@ -66,7 +59,6 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                     <RadixSelect.Trigger
                         ref={ref}
                         className={cn('animal-select-trigger', className)}
-                        aria-label={placeholder}
                         {...rest}
                     >
                         <RadixSelect.Value
@@ -85,18 +77,22 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                         <RadixSelect.Content
                             className="animal-select-content"
                             position="popper"
-                            side="right"
+                            side="bottom"
                             sideOffset={6}
                             avoidCollisions
                         >
                             <RadixSelect.Viewport className="animal-select-viewport">
-                                {options.map((option, index) => (
+                                {options.map((option) => (
                                     <RadixSelect.Item
-                                        key={`${option.key}-${index}`}
-                                        value={toRadixValue(index)}
+                                        key={option.key}
+                                        value={toRadixValue(option.key)}
                                         className="animal-select-item"
                                     >
-                                        <span className="animal-select-dot" />
+                                        <RadixSelect.ItemIndicator className="animal-select-item-indicator">
+                                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                                                <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                            </svg>
+                                        </RadixSelect.ItemIndicator>
                                         <RadixSelect.ItemText>{option.label}</RadixSelect.ItemText>
                                     </RadixSelect.Item>
                                 ))}

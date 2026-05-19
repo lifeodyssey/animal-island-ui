@@ -85,7 +85,7 @@ export const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
                             </span>
                         </RadixAccordion.Trigger>
                     </RadixAccordion.Header>
-                    <RadixAccordion.Content forceMount className="animal-collapse-content">
+                    <RadixAccordion.Content className="animal-collapse-content">
                         <div className="animal-collapse-content-inner">{answer}</div>
                     </RadixAccordion.Content>
                 </RadixAccordion.Item>

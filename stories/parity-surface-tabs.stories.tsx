@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react';
 import type { CSSProperties } from 'react';
 import { useState } from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { Button, Card, Collapse, Modal, Tabs } from '../src';
 import type { TabItem } from '../src';
 
@@ -438,12 +438,12 @@ export const SurfaceParity: Story = {
         await userEvent.click(canvas.getByRole('button', { name: '基础 Modal' }));
         await expect(await body.findByRole('dialog')).toBeInTheDocument();
         await userEvent.keyboard('{Escape}');
-        await expect(body.queryByRole('dialog')).not.toBeInTheDocument();
+        await waitFor(() => expect(body.queryByRole('dialog')).not.toBeInTheDocument());
 
         await userEvent.click(canvas.getByRole('button', { name: '带标题 Modal' }));
         await expect(await body.findByText('博物馆捐赠')).toBeInTheDocument();
         await userEvent.keyboard('{Escape}');
-        await expect(body.queryByText('博物馆捐赠')).not.toBeInTheDocument();
+        await waitFor(() => expect(body.queryByRole('dialog')).not.toBeInTheDocument());
 
         await userEvent.click(canvas.getByRole('button', { name: '自定义 Footer' }));
         await expect(await body.findByText('确认搬家')).toBeInTheDocument();
@@ -496,12 +496,12 @@ export const SurfaceEdgeParity: Story = {
         await expect(await body.findByText('无按钮弹窗')).toBeInTheDocument();
         await expect(body.queryByRole('button', { name: '取消' })).not.toBeInTheDocument();
         await userEvent.keyboard('{Escape}');
-        await expect(body.queryByText('无按钮弹窗')).not.toBeInTheDocument();
+        await waitFor(() => expect(body.queryByRole('dialog')).not.toBeInTheDocument());
 
         await userEvent.click(canvas.getByRole('button', { name: 'mask locked' }));
         await expect(await body.findByText('遮罩不可关闭')).toBeInTheDocument();
         await userEvent.keyboard('{Escape}');
-        await expect(body.queryByText('遮罩不可关闭')).not.toBeInTheDocument();
+        await waitFor(() => expect(body.queryByRole('dialog')).not.toBeInTheDocument());
 
         await userEvent.click(canvas.getByRole('button', { name: 'narrow width' }));
         await expect(await body.findByText('窄弹窗')).toBeInTheDocument();

@@ -54,7 +54,7 @@ test.describe('reference surface/tabs visual parity', () => {
         });
 
         await page.getByRole('button', { name: '关闭打字机效果' }).click();
-        await expect(page.getByText('天气预报')).toBeVisible();
+        await expect(page.getByRole('heading', { name: '天气预报' })).toBeVisible();
         await expect(page.getByRole('dialog')).toHaveScreenshot('modal-open-parity.png', {
             animations: 'disabled',
             maxDiffPixelRatio: 0.006,

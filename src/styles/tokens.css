@@ -1,14 +1,13 @@
 @layer theme, base, components, utilities;
 
+/* Only theme + utilities imported — preflight (base reset) is intentionally
+   omitted so the library does not reset consumer app styles. The base layer
+   below scopes resets to animal-* elements only. */
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
 @theme {
   --font-animal: Nunito, "Noto Sans SC", "Zen Maru Gothic", "HarmonyOS Sans SC", "MiSans", -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  --color-animal-primary: #19c8b9;
-  --color-animal-parchment: #f8f8f0;
-  --color-animal-content: rgb(247, 243, 223);
-  --color-animal-brown: #794f27;
 }
 
 @property --mask-r {
@@ -77,13 +76,15 @@
     --animal-motion-duration-slow: 0.35s;
     --animal-motion-ease: cubic-bezier(0.4, 0, 0.2, 1);
     --animal-height-sm: 32px;
-    --animal-height-base: 40px;
+    --animal-height-base: 45px;
     --animal-height-lg: 48px;
     --animal-table-stripe-bg: rgba(248, 248, 240, 0.6);
     --animal-table-hover-stripe-start: rgba(25, 200, 185, 0.62);
     --animal-table-hover-stripe-end: rgba(14, 196, 182, 0.62);
     --animal-table-hover-text: var(--animal-text-color);
     --animal-table-overlay-bg: rgba(247, 243, 223, 0.8);
+    --animal-primary-color-tab-active: #0cc0b5;
+    --animal-loading-bg: #000;
   }
 
   /* Keep styles isolated: do not globally reset the consumer app. */
@@ -160,7 +161,7 @@
   }
 
   .animal-btn-middle {
-    height: 45px;
+    height: var(--animal-height-base);
     padding: 0 20px;
     font-size: var(--animal-font-size-base);
   }
@@ -325,7 +326,7 @@
     align-items: center;
     width: 100%;
     background: var(--animal-bg-color-content);
-    border: 2.5px solid #c4b89e;
+    border: 2.5px solid var(--animal-text-color-disabled);
     border-radius: var(--animal-radius-pill);
     box-shadow: var(--animal-shadow-input);
     transition: all var(--animal-motion-duration-base) var(--animal-motion-ease);
@@ -457,7 +458,7 @@
     min-width: 52px;
     height: 28px;
     padding: 0;
-    border: 2.5px solid #c4b89e;
+    border: 2.5px solid var(--animal-text-color-disabled);
     border-radius: var(--animal-radius-pill);
     background: #d4c9b4;
     box-shadow: inset 0 2px 4px rgba(114, 93, 66, 0.15);
@@ -473,7 +474,7 @@
 
   .animal-switch[data-state="checked"] {
     background: #86d67a;
-    border-color: #6fba2c;
+    border-color: var(--animal-success-color);
     box-shadow: inset 0 2px 4px rgba(90, 158, 30, 0.2);
   }
 
@@ -498,7 +499,7 @@
     left: 2px;
     width: 21px;
     height: 21px;
-    border: 2.5px solid #c4b89e;
+    border: 2.5px solid var(--animal-text-color-disabled);
     border-radius: 999px;
     background: var(--animal-bg-color-content);
     display: flex;
@@ -509,7 +510,7 @@
 
   .animal-switch[data-state="checked"] .animal-switch-thumb {
     left: calc(100% - 24px);
-    border-color: #6fba2c;
+    border-color: var(--animal-success-color);
   }
 
   .animal-switch-small .animal-switch-thumb {
@@ -551,7 +552,7 @@
   .animal-spinner {
     width: 11px;
     height: 11px;
-    border: 2px solid #6fba2c;
+    border: 2px solid var(--animal-success-color);
     border-right-color: transparent;
     border-radius: 999px;
     animation: animal-spin 0.6s linear infinite;
@@ -586,7 +587,7 @@
     flex-shrink: 0;
     width: 22px;
     height: 22px;
-    border: 2px solid #c4b89e;
+    border: 2px solid var(--animal-text-color-disabled);
     border-radius: 14px;
     background: var(--animal-bg-color-content);
     outline: none;
@@ -755,13 +756,21 @@
     align-items: center;
     justify-content: center;
     min-height: 42px;
-    padding: 10px 30px 10px 14px;
+    padding: 10px 30px 10px 28px;
     color: var(--animal-text-color-body);
     font-size: 14px;
     font-weight: 500;
     outline: none;
     cursor: pointer;
     white-space: nowrap;
+  }
+
+  .animal-select-item-indicator {
+    position: absolute;
+    left: 8px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--animal-primary-color);
   }
 
   .animal-select-item:hover,
@@ -792,10 +801,6 @@
     background: #ffcc00;
     opacity: 0.3;
     transform: translateY(-50%);
-  }
-
-  .animal-select-dot {
-    width: 16px;
   }
 
   .animal-tabs {
@@ -836,7 +841,7 @@
   }
 
   .animal-tab-trigger[data-state="active"] {
-    background: #0cc0b5;
+    background: var(--animal-primary-color-tab-active);
     color: #fff9e3;
     font-weight: 600;
   }
@@ -956,14 +961,27 @@
     transform: rotate(45deg);
   }
 
+  @keyframes animal-collapse-open {
+    from { grid-template-rows: 0fr; }
+    to { grid-template-rows: 1fr; }
+  }
+
+  @keyframes animal-collapse-close {
+    from { grid-template-rows: 1fr; }
+    to { grid-template-rows: 0fr; }
+  }
+
   .animal-collapse-content {
     display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.3s var(--animal-motion-ease);
+    overflow: hidden;
   }
 
   .animal-collapse-content[data-state="open"] {
-    grid-template-rows: 1fr;
+    animation: animal-collapse-open 0.3s var(--animal-motion-ease) forwards;
+  }
+
+  .animal-collapse-content[data-state="closed"] {
+    animation: animal-collapse-close 0.3s var(--animal-motion-ease) forwards;
   }
 
   .animal-collapse-content-inner {
@@ -1422,7 +1440,7 @@
     padding-right: 20px;
     padding-bottom: 20px;
     overflow: hidden;
-    background: #000;
+    background: var(--animal-loading-bg);
     --mask-r: 0px;
   }
 
@@ -1597,6 +1615,10 @@
   }
 }
 
+/* Keyframes at root scope — intentional. This library uses stable animal-*
+   class names rather than Tailwind animate-* utilities, so @keyframes do not
+   need to be inside @theme. Collapse keyframes remain in @layer components
+   where they are consumed. */
 @keyframes animal-btn-loading {
   to { background-position: -28.28px 0; }
 }

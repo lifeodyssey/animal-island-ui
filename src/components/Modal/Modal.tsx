@@ -98,9 +98,9 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
         );
 
         return (
-            <RadixDialog.Root open={open} onOpenChange={handleOpenChange}>
-                <RadixDialog.Portal>
-                    <Cursor>
+            <Cursor>
+                <RadixDialog.Root open={open} onOpenChange={handleOpenChange}>
+                    <RadixDialog.Portal>
                         <RadixDialog.Overlay className="animal-modal-overlay" />
                         <RadixDialog.Content
                             ref={ref}
@@ -112,27 +112,35 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                             <ClipDef />
                             <div className="animal-modal-clipped">
                                 {title ? (
-                                    <div className="animal-modal-header">
-                                        <RadixDialog.Title className="animal-modal-title">
-                                            {title}
-                                        </RadixDialog.Title>
-                                    </div>
+                                    <>
+                                        <div className="animal-modal-header">
+                                            <RadixDialog.Title className="animal-modal-title">
+                                                {title}
+                                            </RadixDialog.Title>
+                                        </div>
+                                        <RadixDialog.Description style={visuallyHiddenStyle}>
+                                            Dialog content for {typeof title === 'string' ? title : 'this dialog'}
+                                        </RadixDialog.Description>
+                                    </>
                                 ) : (
-                                    <RadixDialog.Title style={visuallyHiddenStyle}>
-                                        Dialog
-                                    </RadixDialog.Title>
+                                    <>
+                                        <RadixDialog.Title style={visuallyHiddenStyle}>
+                                            Dialog
+                                        </RadixDialog.Title>
+                                        <RadixDialog.Description style={visuallyHiddenStyle}>
+                                            Dialog content
+                                        </RadixDialog.Description>
+                                    </>
                                 )}
-                                <RadixDialog.Description asChild>
-                                    <div className="animal-modal-body">
-                                        {typewriter ? (
-                                            <Typewriter speed={typeSpeed} trigger={playKey}>
-                                                {children}
-                                            </Typewriter>
-                                        ) : (
-                                            children
-                                        )}
-                                    </div>
-                                </RadixDialog.Description>
+                                <div className="animal-modal-body">
+                                    {typewriter ? (
+                                        <Typewriter speed={typeSpeed} trigger={playKey}>
+                                            {children}
+                                        </Typewriter>
+                                    ) : (
+                                        children
+                                    )}
+                                </div>
                                 {footer !== null && (
                                     <div className="animal-modal-footer">
                                         {footer === undefined ? defaultFooter : footer}
@@ -140,9 +148,9 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                                 )}
                             </div>
                         </RadixDialog.Content>
-                    </Cursor>
-                </RadixDialog.Portal>
-            </RadixDialog.Root>
+                    </RadixDialog.Portal>
+                </RadixDialog.Root>
+            </Cursor>
         );
     }
 );

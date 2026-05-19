@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import * as RadixTabs from '@radix-ui/react-tabs';
 import { cn } from '../../utils/cn';
 import leafIcon from '../../assets/img/icons/icon-leaf.png';
@@ -20,6 +20,8 @@ export interface TabsProps
     onChange?: (key: string) => void;
     leafAnimation?: boolean;
     shadow?: boolean;
+    /** Accessible label forwarded to the tab list */
+    'aria-label'?: string;
 }
 
 export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
@@ -33,42 +35,45 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
             style,
             leafAnimation = true,
             shadow = true,
+            'aria-label': ariaLabel,
             ...rest
         },
         ref
     ) => {
-        const fallbackActiveKey = defaultActiveKey ?? items[0]?.key;
         const isControlled = activeKey !== undefined;
-        const [uncontrolledActiveKey, setUncontrolledActiveKey] = useState(fallbackActiveKey);
-        const currentActiveKey = isControlled ? activeKey : uncontrolledActiveKey;
 
-        useEffect(() => {
-            if (isControlled) return;
-            if (currentActiveKey === undefined) {
-                setUncontrolledActiveKey(defaultActiveKey ?? items[0]?.key);
-                return;
-            }
-            if (items.some((item) => item.key === currentActiveKey)) return;
-            setUncontrolledActiveKey(defaultActiveKey ?? items[0]?.key);
-        }, [currentActiveKey, defaultActiveKey, isControlled, items]);
+        // Track the active key for leaf animation styling.
+        // In controlled mode this is always `activeKey`.
+        // In uncontrolled mode we mirror what Radix tracks via onValueChange.
+        const [trackedKey, setTrackedKey] = useState(
+            defaultActiveKey ?? items[0]?.key
+        );
+        const currentActiveKey = isControlled ? activeKey : trackedKey;
 
         const handleValueChange = (key: string) => {
             if (!isControlled) {
-                setUncontrolledActiveKey(key);
+                setTrackedKey(key);
             }
             onChange?.(key);
         };
+
+        // Build props for RadixTabs.Root depending on controlled vs uncontrolled
+        const rootProps = isControlled
+            ? { value: activeKey, onValueChange: handleValueChange }
+            : {
+                  defaultValue: defaultActiveKey ?? items[0]?.key,
+                  onValueChange: handleValueChange,
+              };
 
         return (
             <RadixTabs.Root
                 ref={ref}
                 className={cn('animal-tabs', className)}
                 style={style}
-                value={currentActiveKey ?? ''}
-                onValueChange={handleValueChange}
+                {...rootProps}
                 {...rest}
             >
-                <RadixTabs.List className="animal-tabs-list">
+                <RadixTabs.List className="animal-tabs-list" aria-label={ariaLabel}>
                     {items.map((item) => {
                         const isActive = item.key === currentActiveKey;
                         return (

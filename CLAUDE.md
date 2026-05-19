@@ -1,25 +1,22 @@
-# CLAUDE.md - Animal Island UI Tailwind/Radix Migration
+# CLAUDE.md - Animal Island UI Tailwind
 
 ## Goal
 
-Maintain a 1:1 Tailwind CSS v4 + Radix UI implementation of
-`animal-island-ui` while publishing this fork as `animal-island-ui-tailwind`
-and preserving the original package distribution shape.
+Maintain and evolve `animal-island-ui-tailwind`, a Tailwind CSS v4 + Radix UI
+component library with the Animal Island visual language. This is an
+independently maintained project, originally forked from
+`guokaigdg/animal-island-ui` (MIT) and now published under its own npm
+package name.
 
-The original Less implementation is used as the reference source for API,
-visual parity, assets, colors, spacing, motion, and component behavior. The
-migrated implementation is now the `main` branch content.
+The original Less implementation served as the reference source during the
+initial migration. The migrated implementation is now the `main` branch
+content and the single source of truth.
 
-## Reference Source
+## Repository
 
-- Upstream: `guokaigdg/animal-island-ui` (MIT)
-- Fork/repo: `lifeodyssey/animal-island-ui`
-- Local original-reference worktree: `../animal-island-ui-reference`
-- Reference material:
-  - original `src/components/*`
-  - original demo pages
-  - original package shape from `npm pack --dry-run`
-  - jsDelivr package layout
+- Package: `animal-island-ui-tailwind` on npm
+- Repo: `lifeodyssey/animal-island-ui` on GitHub
+- Origin: forked from `guokaigdg/animal-island-ui` (MIT), now independent
 
 ## Stack
 
@@ -32,7 +29,7 @@ migrated implementation is now the `main` branch content.
 
 ## Component Inventory
 
-The library currently exposes 18 components:
+The library exposes 19 components:
 
 1. Button
 2. Input
@@ -52,6 +49,7 @@ The library currently exposes 18 components:
 16. Cursor
 17. CodeBlock
 18. Loading
+19. Table
 
 ## Implementation Rules
 
@@ -68,7 +66,7 @@ The library currently exposes 18 components:
 
 ## Publishing Shape
 
-Keep the original single-package distribution model:
+Keep the single-package distribution model:
 
 - npm package name: `animal-island-ui-tailwind`
 - `main`: `dist/cjs/index.cjs`
@@ -122,3 +120,30 @@ UI package imports CSS, images, SVGs, and fonts.
 - Prefer scoped component-region screenshots over full-page screenshots.
 - For stories with interactive `play` functions, add dedicated no-play stories
   for Playwright when needed to avoid test races.
+- Visual baselines must match upstream behavior — do not "fix" upstream visual
+  quirks without explicit approval. Document deviations as known differences.
+
+## Skills Reference
+
+When working on this project, use these installed skills for best-practice
+guidance:
+
+- `/tailwind-design-system` — Tailwind CSS v4 `@theme`, design tokens, utility
+  patterns, responsive design system conventions.
+- `/radix-ui-design-system` — Radix UI primitives, headless component patterns,
+  accessibility, compound components, theming strategies.
+- `/storybook-story-writing` — CSF3 story format, play functions, interaction
+  testing, story organization.
+
+## Upstream Sync Workflow
+
+When porting new components from `guokaigdg/animal-island-ui`:
+
+1. Run `npm run codex:upstream-check` to detect new upstream commits.
+2. Create branch `codex/upstream-sync-<hash>`.
+3. Write tests first (Storybook parity story + Playwright behavior + visual).
+   Tests should FAIL at this stage.
+4. Implement the component using Tailwind CSS v4 + Radix UI, matching upstream
+   visual and behavioral output.
+5. Verify: `npm run build && npm test && npm run build:demo && npx tsc --noEmit`.
+6. Create draft PR with upstream commit range in the description.

@@ -1,26 +1,34 @@
 # AGENTS.md
 
-This repository is the Tailwind CSS v4 + Radix UI migration of
-`animal-island-ui`.
+This repository is `animal-island-ui-tailwind`, an independently maintained
+React component library with the Animal Island visual language, built on
+Tailwind CSS v4 + Radix UI.
 
 ## Current project state
 
-- `main` is the migrated implementation, not the original Less version.
-- The local reference worktree at `../animal-island-ui-reference` is used only
-  as a visual/API comparison source for the original library.
-- The package is still published as one npm package named `animal-island-ui`.
+- `main` is the active development branch.
+- The package is published to npm as `animal-island-ui-tailwind`.
+- The library exposes 19 components (Button, Input, Switch, Checkbox, Select,
+  Tabs, Card, Modal, Collapse, Divider, Icon, Typewriter, Phone, Footer, Time,
+  Cursor, CodeBlock, Loading, Table).
 - Runtime styling lives in `src/styles/tokens.css` and uses stable
   `animal-*` classes plus `--animal-*` CSS custom properties.
 - Interactive primitives are backed by Radix UI where appropriate.
 - Visual and behavioral parity is covered by Storybook/Vitest and Playwright.
 
+## Origin
+
+Originally forked from `guokaigdg/animal-island-ui` (MIT). The original Less
+implementation was used as the migration reference. This project is now
+independently maintained and published under its own package name.
+
 ## Development defaults
 
-- Preserve the original library distribution shape:
+- Preserve the single-package distribution shape:
   - `main`: `dist/cjs/index.cjs`
   - `module`: `dist/es/index.js`
   - `types`: `dist/types/index.d.ts`
-  - style entry: `animal-island-ui/style`
+  - style entry: `animal-island-ui-tailwind/style`
   - assets emitted under `dist/files`
 - Do not reintroduce Less modules or `variables.less`.
 - Do not split the package into per-component subpaths unless explicitly asked.
