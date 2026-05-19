@@ -5,7 +5,7 @@ All notable changes to `animal-island-ui-tailwind` are documented here.
 This project follows a lightweight Keep a Changelog style and uses semantic
 versioning for npm releases.
 
-## 0.9.0 - 2026-05-19
+## 0.8.1 - 2026-05-19
 
 ### Added
 
