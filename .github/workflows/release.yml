@@ -1,7 +1,6 @@
 name: Release
 
 on:
-  workflow_dispatch:
   push:
     tags:
       - "v*.*.*"
@@ -11,12 +10,12 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 jobs:
   publish:
-    name: Publish to npm
+    name: Verify, publish & release
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -43,7 +42,7 @@ jobs:
         run: npm run build
 
       - name: Run tests
-        run: npm run test:ci
+        run: npm run test:migration && npm run test-storybook && npm run test:playwright && npm run test:a11y
 
       - name: Build Storybook
         run: npm run build:storybook
@@ -51,5 +50,16 @@ jobs:
       - name: Verify npm package contents
         run: npm pack --dry-run
 
-      - name: Publish package
+      - name: Publish to npm
         run: npm publish --access public
+
+      - name: Extract version from tag
+        id: version
+        run: echo "tag=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          generate_release_notes: true
