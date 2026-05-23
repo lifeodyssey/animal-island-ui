@@ -126,9 +126,26 @@ const CodeCursorTypewriterSection = () => {
                 <CodeBlock code={codeSample} className="parity-code-block" style={{ width: 720, maxHeight: 260 }} />
             </div>
             <div style={labelStyle}>Cursor</div>
-            <Cursor className="parity-cursor" style={{ ...panelStyle, width: 360 }}>
-                <button type="button">cursor target</button>
+            <Cursor className="parity-cursor" style={{ ...panelStyle, width: 360 }} data-testid="cursor-force-region">
+                <button type="button" data-testid="cursor-force-button">
+                    cursor target
+                </button>
                 <span style={{ marginLeft: 12 }}>custom cursor wraps descendants</span>
+            </Cursor>
+            <Cursor
+                className="parity-cursor"
+                forceAll={false}
+                style={{ ...panelStyle, width: 480, display: 'flex', gap: 12, alignItems: 'center' }}
+                data-testid="cursor-scoped-region"
+            >
+                <button type="button" data-testid="cursor-scoped-button">
+                    scoped button
+                </button>
+                <input data-testid="cursor-scoped-input" type="text" defaultValue="scoped input" />
+                <button type="button" data-testid="cursor-scoped-disabled" disabled>
+                    disabled
+                </button>
+                <span>scoped cursor preserves interaction semantics</span>
             </Cursor>
             <div style={labelStyle}>Typewriter</div>
             <div data-testid="typewriter-region" style={{ ...panelStyle, minHeight: 90 }}>
@@ -209,7 +226,10 @@ export const TextUtilityParity: Story = {
     render: () => <CodeCursorTypewriterSection />,
     play: async ({ canvas }) => {
         await expect(canvas.getByTestId('code-block-region')).toHaveTextContent('useState');
-        await expect(canvas.getByRole('button', { name: 'cursor target' })).toBeVisible();
+        await expect(canvas.getByTestId('cursor-force-button')).toBeVisible();
+        await expect(canvas.getByTestId('cursor-scoped-button')).toBeVisible();
+        await expect(canvas.getByTestId('cursor-scoped-input')).toBeVisible();
+        await expect(canvas.getByTestId('cursor-scoped-disabled')).toBeVisible();
         await expect(canvas.getByTestId('typewriter-static')).toHaveTextContent('Instant message');
         await waitFor(() => expect(canvas.getByTestId('typewriter-live')).toHaveTextContent('Island typing'), {
             timeout: 5000,

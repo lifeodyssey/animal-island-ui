@@ -58,6 +58,12 @@ test.describe('reference display utility visual parity', () => {
         await expect(page.getByTestId('code-block-region')).toHaveScreenshot('code-block-region.png', {
             animations: 'disabled',
         });
+        await expect(page.getByTestId('cursor-force-region')).toHaveScreenshot('cursor-force-region.png', {
+            animations: 'disabled',
+        });
+        await expect(page.getByTestId('cursor-scoped-region')).toHaveScreenshot('cursor-scoped-region.png', {
+            animations: 'disabled',
+        });
         await expect(page.getByTestId('typewriter-region')).toHaveScreenshot('typewriter-region.png', {
             animations: 'disabled',
         });

@@ -63,7 +63,11 @@ test.describe('reference display utility parity', () => {
         await expect(codeBlock.locator('span')).toHaveCount(72);
         await expect(codeBlock.locator('span').filter({ hasText: 'React' }).first()).toHaveCSS('color', 'rgb(224, 108, 117)');
 
-        await expect(page.getByRole('button', { name: 'cursor target' })).toHaveCSS('cursor', /cursor-icon/);
+        await expect(page.getByTestId('cursor-force-button')).toHaveCSS('cursor', /cursor-icon/);
+        await expect(page.getByTestId('cursor-scoped-region')).toHaveCSS('cursor', /cursor-icon/);
+        await expect(page.getByTestId('cursor-scoped-button')).toHaveCSS('cursor', 'pointer');
+        await expect(page.getByTestId('cursor-scoped-input')).toHaveCSS('cursor', 'text');
+        await expect(page.getByTestId('cursor-scoped-disabled')).toHaveCSS('cursor', 'not-allowed');
         await expect(page.getByTestId('typewriter-static')).toHaveText('Instant message');
         await expect(page.getByTestId('typewriter-live')).toHaveText('Island typing');
         await expect(page.getByTestId('typewriter-done-count')).toHaveText('done: 1');
