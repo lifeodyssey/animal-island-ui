@@ -18,7 +18,7 @@ export const Cursor = React.forwardRef<HTMLDivElement, CursorProps>(
             ref={ref}
             className={cn(
                 'animal-cursor',
-                forceAll ? 'animal-cursor--force' : 'animal-cursor--scoped',
+                !forceAll && 'animal-cursor--scoped',
                 className
             )}
             style={style}
