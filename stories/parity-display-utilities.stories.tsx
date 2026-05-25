@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import type { CSSProperties } from 'react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import {
     Button,
@@ -14,6 +14,9 @@ import {
     Phone,
     Time,
     Typewriter,
+    WeddingInvitation,
+    WeddingInvitationExportButton,
+    type WeddingInvitationRef,
 } from '../src';
 
 const meta = {
@@ -198,6 +201,24 @@ const StatusSceneSection = () => {
     );
 };
 
+const WeddingInvitationSection = () => {
+    const invitationRef = useRef<WeddingInvitationRef>(null);
+
+    return (
+        <section data-testid="wedding-invitation-region" style={sectionStyle}>
+            <div style={labelStyle}>WeddingInvitation</div>
+            <div data-testid="wedding-invitation-card" style={{ ...panelStyle, width: 'fit-content' }}>
+                <WeddingInvitation ref={invitationRef} className="parity-wedding-invitation" />
+            </div>
+            <div data-testid="wedding-invitation-export" style={rowStyle}>
+                <WeddingInvitationExportButton targetRef={invitationRef} filename="storybook-wedding-invitation">
+                    保存为图片
+                </WeddingInvitationExportButton>
+            </div>
+        </section>
+    );
+};
+
 export const AssetsParity: Story = {
     render: () => (
         <div style={pageStyle}>
@@ -265,4 +286,19 @@ export const StatusSceneParity: Story = {
 
 export const StatusSceneStable: Story = {
     render: () => <StatusSceneSection />,
+};
+
+export const WeddingInvitationParity: Story = {
+    render: () => <WeddingInvitationSection />,
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        await expect(canvas.getByTestId('wedding-invitation-region')).toBeVisible();
+        await expect(canvas.getByTestId('wedding-invitation-card')).toContainText('Wedding Invitation');
+        await expect(canvas.getByTestId('wedding-invitation-card')).toContainText('婚礼时间');
+        await expect(canvas.getByRole('button', { name: '保存为图片' })).toBeVisible();
+    },
+};
+
+export const WeddingInvitationStable: Story = {
+    render: () => <WeddingInvitationSection />,
 };

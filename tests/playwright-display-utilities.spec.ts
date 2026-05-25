@@ -3,6 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 const assetsStoryUrl = '/iframe.html?id=regression-parity-display-utilities--assets-parity&viewMode=story';
 const textStoryUrl = '/iframe.html?id=regression-parity-display-utilities--text-utility-stable&viewMode=story';
 const statusStoryUrl = '/iframe.html?id=regression-parity-display-utilities--status-scene-stable&viewMode=story';
+const weddingStoryUrl = '/iframe.html?id=regression-parity-display-utilities--wedding-invitation-stable&viewMode=story';
 
 const freezeClock = async (page: Page) => {
     await page.addInitScript(() => {
@@ -113,5 +114,24 @@ test.describe('reference display utility parity', () => {
         await expect(timeRoot.locator('[class*="acMonthday"], .animal-time-monthday').first()).toHaveCSS('font-size', '16px');
         await expect(timeRoot.locator('[class*="acTime"], .animal-time-clock').first()).toHaveCSS('font-size', '32px');
         await expect(timeRoot.locator('[class*="acColon"], .animal-time-colon').first()).toHaveCSS('font-size', '32px');
+    });
+
+    test('covers WeddingInvitation structure and export affordance', async ({ page }) => {
+        await page.goto(weddingStoryUrl);
+        await expect(page.getByTestId('wedding-invitation-region')).toBeVisible();
+
+        const card = page.getByTestId('wedding-invitation-card');
+        await expect(card).toContainText('Wedding Invitation');
+        await expect(card).toContainText('婚礼时间');
+        await expect(card).toContainText('彩虹岛 · 樱花广场');
+        await expect(card).toContainText('婚礼抽奖券');
+
+        const weddingRoot = card.locator('.animal-wedding-invitation').first();
+        await expect(weddingRoot).toHaveCSS('max-width', '420px');
+        await expect(weddingRoot).toHaveCSS('border-radius', '16px');
+
+        const exportButton = page.getByRole('button', { name: '保存为图片' });
+        await expect(exportButton).toBeVisible();
+        await expect(exportButton).toBeEnabled();
     });
 });

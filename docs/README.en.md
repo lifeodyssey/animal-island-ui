@@ -41,7 +41,7 @@ The visual design is inspired by [guokaigdg/animal-island-ui](https://github.com
 
 ## Components
 
-19 components included:
+20 components included:
 
 | Interactive | Surface / Content | Decorative / Special |
 |-------------|-------------------|---------------------|
@@ -51,7 +51,7 @@ The visual design is inspired by [guokaigdg/animal-island-ui](https://github.com
 | Checkbox | CodeBlock | Phone |
 | Select | Footer | Time |
 | Tabs | Loading | Cursor |
-| Table | | |
+| Table | WeddingInvitation | |
 
 ## Quick Start
 
