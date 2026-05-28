@@ -41,7 +41,7 @@
 
 ## 组件一览
 
-当前包含 19 个组件：
+当前包含 21 个组件：
 
 | 交互组件 | 容器与展示 | 装饰与特殊 |
 |----------|-----------|-----------|
@@ -49,9 +49,9 @@
 | Input 输入框 | Modal 弹窗 | Icon 图标 |
 | Switch 开关 | Collapse 折叠面板 | Typewriter 打字机 |
 | Checkbox 多选框 | CodeBlock 代码块 | Phone 手机 |
-| Select 选择器 | Footer 页脚 | Time 时间 |
-| Tabs 标签页 | Loading 加载 | Cursor 光标 |
-| Table 表格 | | |
+| Radio 单选框 | Footer 页脚 | Time 时间 |
+| Select 选择器 | Loading 加载 | Cursor 光标 |
+| Tabs 标签页 | Table 表格 | Tooltip 气泡提示 |
 
 ## 快速开始
 

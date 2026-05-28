@@ -29,10 +29,26 @@ test.describe('reference display utility parity', () => {
         await expect(page.getByTestId('icon-region')).toBeVisible();
 
         const dividers = page.getByTestId('divider-matrix').locator('div[class*="divider"]');
-        await expect(dividers).toHaveCount(6);
-        for (const divider of await dividers.all()) {
+        await expect(dividers).toHaveCount(10);
+        const solidAndWaveDividers = page
+            .getByTestId('divider-matrix')
+            .locator(
+                '.animal-divider:not(.animal-divider-dashed-brown):not(.animal-divider-dashed-teal):not(.animal-divider-dashed-white):not(.animal-divider-dashed-yellow)',
+            );
+        const dashedDividers = page
+            .getByTestId('divider-matrix')
+            .locator(
+                '.animal-divider.animal-divider-dashed-brown, .animal-divider.animal-divider-dashed-teal, .animal-divider.animal-divider-dashed-white, .animal-divider.animal-divider-dashed-yellow',
+            );
+
+        for (const divider of await solidAndWaveDividers.all()) {
             await expect(divider).toHaveCSS('height', '12px');
             await expect(divider).toHaveCSS('background-repeat', 'no-repeat');
+        }
+        for (const divider of await dashedDividers.all()) {
+            await expect(divider).toHaveCSS('height', '12px');
+            await expect(divider).toHaveCSS('background-repeat', 'repeat-x');
+            await expect(divider).toHaveCSS('background-size', '12px 2px');
         }
         await expect(dividers.last()).toHaveCSS('width', '220px');
 
