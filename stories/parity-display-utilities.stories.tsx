@@ -64,7 +64,17 @@ const panelStyle = {
     borderRadius: 12,
 } satisfies CSSProperties;
 
-const dividerTypes = ['line-brown', 'line-teal', 'line-white', 'line-yellow', 'wave-yellow'] as const;
+const dividerTypes = [
+    'line-brown',
+    'line-teal',
+    'line-white',
+    'line-yellow',
+    'wave-yellow',
+    'dashed-brown',
+    'dashed-teal',
+    'dashed-white',
+    'dashed-yellow',
+] as const;
 const footerTypes = ['sea', 'tree'] as const;
 
 const codeSample = `import React, { useState } from 'react';
@@ -228,7 +238,7 @@ export const AssetsParity: Story = {
     ),
     play: async ({ canvas }) => {
         await waitFor(() => {
-            expect(canvas.getByTestId('divider-matrix').querySelectorAll('div[class*="divider"]').length).toBeGreaterThanOrEqual(6);
+            expect(canvas.getByTestId('divider-matrix').querySelectorAll('div[class*="divider"]').length).toBeGreaterThanOrEqual(10);
         });
         await waitFor(() => {
             expect(canvas.getByTestId('footer-matrix').querySelectorAll('div[class*="footer"]').length).toBeGreaterThanOrEqual(2);
