@@ -139,7 +139,7 @@ test.describe('reference controls parity', () => {
         await expect(page.getByTestId('radio-selected-label')).toContainText('夏天');
 
         const disabledPear = region.locator('.animal-radio-item').filter({ hasText: '🍐 梨子' }).first();
-        await expect(disabledPear.getByRole('radio')).toHaveAttribute('aria-disabled', 'true');
+        await expect(disabledPear.getByRole('radio')).toBeDisabled();
         await disabledPear.click({ force: true });
         await expect(disabledPear.getByRole('radio')).toHaveAttribute('aria-checked', 'false');
     });

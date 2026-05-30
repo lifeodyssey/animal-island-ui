@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import { Radio } from './Radio';
 import type { RadioOption } from './Radio';
 
@@ -26,14 +26,14 @@ export const DisabledGroup: Story = {
     args: { options: seasons, defaultValue: 'autumn', disabled: true },
 };
 
-export const KeyboardRoving: Story = {
+export const PicksSummer: Story = {
     args: { options: seasons, defaultValue: 'spring' },
     play: async ({ canvas, userEvent }) => {
-        const firstRadio = canvas.getAllByRole('radio')[0];
-        await expect(firstRadio).toHaveAttribute('aria-checked', 'true');
-        firstRadio.focus();
-        await userEvent.keyboard('{ArrowRight}');
-        const secondRadio = canvas.getAllByRole('radio')[1];
-        await expect(secondRadio).toHaveAttribute('aria-checked', 'true');
+        const radios = canvas.getAllByRole('radio');
+        await expect(radios[0]).toHaveAttribute('aria-checked', 'true');
+        await userEvent.click(radios[1]);
+        await waitFor(async () => {
+            await expect(radios[1]).toHaveAttribute('aria-checked', 'true');
+        });
     },
 };

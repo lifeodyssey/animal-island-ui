@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, within, waitFor } from 'storybook/test';
+import { expect, within } from 'storybook/test';
 import { Tooltip } from './Tooltip';
 import { Button } from '../Button';
 
@@ -33,8 +33,7 @@ export const RendersInPortal: Story = {
         const trigger = canvas.getByRole('button', { name: /show tooltip/i });
         await userEvent.hover(trigger);
         const docBody = within(canvasElement.ownerDocument.body);
-        await waitFor(async () => {
-            await expect(await docBody.findByText('默认提示')).toBeVisible();
-        });
+        const tooltip = await docBody.findByRole('tooltip', {}, { timeout: 3000 });
+        await expect(tooltip).toHaveTextContent('默认提示');
     },
 };

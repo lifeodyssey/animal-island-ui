@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
+import React, { useId, useState } from 'react';
+import * as RadixTooltip from '@radix-ui/react-tooltip';
 import { cn } from '../../utils/cn';
 
 export type TooltipPlacement =
@@ -64,6 +65,16 @@ export interface TooltipProps {
     style?: React.CSSProperties;
 }
 
+const placementToSide = (p: TooltipPlacement): 'top' | 'bottom' | 'left' | 'right' =>
+    p.split('-')[0] as 'top' | 'bottom' | 'left' | 'right';
+
+const placementToAlign = (p: TooltipPlacement): 'start' | 'center' | 'end' => {
+    const part = p.split('-')[1];
+    if (part === 'start') return 'start';
+    if (part === 'end') return 'end';
+    return 'center';
+};
+
 export const Tooltip: React.FC<TooltipProps> = ({
     title,
     placement = 'top',
@@ -74,101 +85,67 @@ export const Tooltip: React.FC<TooltipProps> = ({
     className,
     style,
 }) => {
-    const [visible, setVisible] = useState(false);
-    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const [clickOpen, setClickOpen] = useState(false);
+    const isClick = trigger === 'click';
+    const isIsland = variant === 'island';
     const uid = useId().replace(/:/g, '');
     const clipId = `animal-tooltip-clip-${uid}`;
-    const tooltipId = `animal-tooltip-${uid}`;
-
-    const clearTimer = useCallback(() => {
-        if (!timerRef.current) return;
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
-    }, []);
-
-    const show = useCallback(() => {
-        clearTimer();
-        setVisible(true);
-    }, [clearTimer]);
-
-    const hide = useCallback(() => {
-        clearTimer();
-        timerRef.current = setTimeout(() => {
-            setVisible(false);
-            timerRef.current = null;
-        }, 100);
-    }, [clearTimer]);
-
-    useEffect(() => () => clearTimer(), [clearTimer]);
 
     const child = React.Children.only(children);
-    const childProps = child.props as Record<string, unknown>;
-    const triggerProps: Record<string, unknown> = {};
-
-    if (trigger === 'hover') {
-        triggerProps.onMouseEnter = (event: React.MouseEvent) => {
-            show();
-            (childProps.onMouseEnter as ((event: React.MouseEvent) => void) | undefined)?.(event);
-        };
-        triggerProps.onMouseLeave = (event: React.MouseEvent) => {
-            hide();
-            (childProps.onMouseLeave as ((event: React.MouseEvent) => void) | undefined)?.(event);
-        };
-    } else if (trigger === 'focus') {
-        triggerProps.onFocus = (event: React.FocusEvent) => {
-            show();
-            (childProps.onFocus as ((event: React.FocusEvent) => void) | undefined)?.(event);
-        };
-        triggerProps.onBlur = (event: React.FocusEvent) => {
-            hide();
-            (childProps.onBlur as ((event: React.FocusEvent) => void) | undefined)?.(event);
-        };
-    } else {
-        triggerProps.onClick = (event: React.MouseEvent) => {
-            setVisible((current) => !current);
-            (childProps.onClick as ((event: React.MouseEvent) => void) | undefined)?.(event);
-        };
-    }
-
-    const isIsland = variant === 'island';
-
-    if (visible) {
-        triggerProps['aria-describedby'] = tooltipId;
-    }
+    const triggerNode = isClick
+        ? React.cloneElement(child, {
+              onClick: (event: React.MouseEvent) => {
+                  setClickOpen((current) => !current);
+                  (
+                      child.props as { onClick?: (event: React.MouseEvent) => void }
+                  ).onClick?.(event);
+              },
+          } as React.HTMLAttributes<HTMLElement>)
+        : child;
 
     return (
-        <div className={cn('animal-tooltip-wrapper', className)} style={style}>
-            {React.cloneElement(child, triggerProps)}
-            <div
-                id={tooltipId}
-                role="tooltip"
-                aria-hidden={!visible}
-                className={cn(
-                    'animal-tooltip',
-                    `animal-tooltip-${placement}`,
-                    isIsland && 'animal-tooltip-island',
-                    bordered ? 'animal-tooltip-bordered' : 'animal-tooltip-borderless',
-                    visible && 'animal-tooltip-visible',
-                )}
-                onMouseEnter={trigger === 'hover' ? show : undefined}
-                onMouseLeave={trigger === 'hover' ? hide : undefined}
+        <RadixTooltip.Provider delayDuration={0} disableHoverableContent={trigger === 'focus'}>
+            <RadixTooltip.Root
+                open={isClick ? clickOpen : undefined}
+                onOpenChange={isClick ? setClickOpen : undefined}
             >
-                {isIsland ? (
-                    <>
-                        <div className="animal-tooltip-island-body">
-                            <IslandClipDef id={clipId} />
-                            {bordered && <IslandShapeSvg />}
-                            <div className="animal-tooltip-island-content" style={{ clipPath: `url(#${clipId})` }}>
-                                <div className="animal-tooltip-content">{title}</div>
-                            </div>
-                        </div>
-                        <span className="animal-tooltip-tail" aria-hidden />
-                    </>
-                ) : (
-                    <div className="animal-tooltip-content">{title}</div>
-                )}
-            </div>
-        </div>
+                <RadixTooltip.Trigger asChild>{triggerNode}</RadixTooltip.Trigger>
+                <RadixTooltip.Portal>
+                    <RadixTooltip.Content
+                        side={placementToSide(placement)}
+                        align={placementToAlign(placement)}
+                        sideOffset={6}
+                        className={cn(
+                            'animal-tooltip',
+                            `animal-tooltip-${placement}`,
+                            isIsland && 'animal-tooltip-island',
+                            bordered ? 'animal-tooltip-bordered' : 'animal-tooltip-borderless',
+                            'animal-tooltip-visible',
+                            className,
+                        )}
+                        style={style}
+                    >
+                        {isIsland ? (
+                            <>
+                                <div className="animal-tooltip-island-body">
+                                    <IslandClipDef id={clipId} />
+                                    {bordered && <IslandShapeSvg />}
+                                    <div
+                                        className="animal-tooltip-island-content"
+                                        style={{ clipPath: `url(#${clipId})` }}
+                                    >
+                                        <div className="animal-tooltip-content">{title}</div>
+                                    </div>
+                                </div>
+                                <span className="animal-tooltip-tail" aria-hidden />
+                            </>
+                        ) : (
+                            <div className="animal-tooltip-content">{title}</div>
+                        )}
+                    </RadixTooltip.Content>
+                </RadixTooltip.Portal>
+            </RadixTooltip.Root>
+        </RadixTooltip.Provider>
     );
 };
 
