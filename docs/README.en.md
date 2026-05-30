@@ -41,7 +41,7 @@ The visual design is inspired by [guokaigdg/animal-island-ui](https://github.com
 
 ## Components
 
-19 components included:
+22 components included:
 
 | Interactive | Surface / Content | Decorative / Special |
 |-------------|-------------------|---------------------|
@@ -49,9 +49,10 @@ The visual design is inspired by [guokaigdg/animal-island-ui](https://github.com
 | Input | Modal | Icon |
 | Switch | Collapse | Typewriter |
 | Checkbox | CodeBlock | Phone |
-| Select | Footer | Time |
-| Tabs | Loading | Cursor |
-| Table | | |
+| Radio | Footer | Time |
+| Select | Loading | Cursor |
+| Tabs | Table | Tooltip |
+| | WeddingInvitation | |
 
 ## Quick Start
 
@@ -124,7 +125,7 @@ npm pack --dry-run       # Verify npm package contents
 |----------|---------|---------|
 | GitHub Actions CI | PR / main push | Type check + build + test + a11y scan + package verify |
 | GitHub Actions Release | `v*.*.*` tag / manual | CI checks + npm Trusted Publishing |
-| Cloudflare Pages | main push / PR | Auto-deploy Storybook to [animalcrossing.zhenjia.org](https://animalcrossing.zhenjia.org) |
+| Cloudflare Pages | main push / PR | Auto-deploy Storybook to [animalcrossing.zhenjia.dev](https://animalcrossing.zhenjia.dev) |
 
 See [PUBLISHING.md](../PUBLISHING.md) for the full release flow.
 
