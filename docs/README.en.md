@@ -124,7 +124,7 @@ npm pack --dry-run       # Verify npm package contents
 |----------|---------|---------|
 | GitHub Actions CI | PR / main push | Type check + build + test + a11y scan + package verify |
 | GitHub Actions Release | `v*.*.*` tag / manual | CI checks + npm Trusted Publishing |
-| Cloudflare Pages | main push / PR | Auto-deploy Storybook to [animalcrossing.zhenjia.org](https://animalcrossing.zhenjia.org) |
+| Cloudflare Pages | main push / PR | Auto-deploy Storybook to [animalcrossing.zhenjia.dev](https://animalcrossing.zhenjia.dev) |
 
 See [PUBLISHING.md](../PUBLISHING.md) for the full release flow.
 
