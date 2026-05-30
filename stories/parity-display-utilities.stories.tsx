@@ -303,8 +303,8 @@ export const WeddingInvitationParity: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
         await expect(canvas.getByTestId('wedding-invitation-region')).toBeVisible();
-        await expect(canvas.getByTestId('wedding-invitation-card')).toContainText('Wedding Invitation');
-        await expect(canvas.getByTestId('wedding-invitation-card')).toContainText('婚礼时间');
+        await expect(canvas.getByTestId('wedding-invitation-card')).toHaveTextContent('Wedding Invitation');
+        await expect(canvas.getByTestId('wedding-invitation-card')).toHaveTextContent('婚礼时间');
         await expect(canvas.getByRole('button', { name: '保存为图片' })).toBeVisible();
     },
 };

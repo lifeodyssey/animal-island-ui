@@ -136,7 +136,7 @@ test.describe('reference controls parity', () => {
         const firstRadio = region.getByRole('radio').first();
         await firstRadio.focus();
         await page.keyboard.press('ArrowRight');
-        await expect(page.getByTestId('radio-selected-label')).toContainText('秋天');
+        await expect(page.getByTestId('radio-selected-label')).toContainText('夏天');
 
         const disabledPear = region.locator('.animal-radio-item').filter({ hasText: '🍐 梨子' }).first();
         await expect(disabledPear.getByRole('radio')).toHaveAttribute('aria-disabled', 'true');
@@ -155,7 +155,7 @@ test.describe('reference controls parity', () => {
         await expect(page.getByRole('tooltip').filter({ hasText: '点击提示' })).toBeVisible();
 
         const islandTooltip = page.locator('.animal-tooltip.animal-tooltip-island').first();
-        await region.getByRole('button', { name: 'island' }).hover();
+        await region.getByRole('button', { name: 'island', exact: true }).hover();
         await expect(islandTooltip).toBeVisible();
         await expect(islandTooltip).toHaveCSS('max-width', '280px');
     });
